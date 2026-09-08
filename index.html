@@ -198,6 +198,44 @@
             border-bottom-color: var(--color-accent);
         }
 
+        /* ===== LANGUAGE TOGGLE ===== */
+        .lang-toggle {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 1000;
+            display: flex;
+            background: rgba(255,255,255,0.95);
+            border: 1px solid var(--color-border);
+            border-radius: 50px;
+            padding: 4px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            backdrop-filter: blur(8px);
+            font-family: var(--font-body);
+        }
+
+        .lang-toggle .opt {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            line-height: 1.2;
+        }
+
+        .lang-toggle .opt.active {
+            background: var(--color-accent);
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .lang-toggle { top: 10px; right: 10px; }
+            .lang-toggle .opt { padding: 5px 11px; font-size: 0.75rem; }
+        }
+
         /* ===== SECTIONS ===== */
         .section {
             max-width: var(--max-w);
@@ -900,6 +938,12 @@
 </head>
 <body>
 
+<!-- ===== LANGUAGE TOGGLE ===== -->
+<div class="lang-toggle" id="langToggle" role="group" aria-label="Language / 语言">
+    <span class="opt active" data-lang="en">EN</span>
+    <span class="opt" data-lang="cn">中文</span>
+</div>
+
 <!-- ===== HERO ===== -->
 <section class="hero" id="top">
     <div class="hero-content">
@@ -984,20 +1028,20 @@
             </div>
             <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem;">
                 <div style="background:var(--color-accent-bg); border-radius:12px; padding:1.5rem; border-left:4px solid var(--color-day1);">
-                    <div style="font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; color:var(--color-text-light); font-weight:600;">Outbound · To Guangzhou</div>
+                    <div style="font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; color:var(--color-text-light); font-weight:600;">Outbound · Singapore → Guangzhou</div>
                     <div style="font-family:var(--font-display); font-size:2rem; margin:0.5rem 0; color:var(--color-day1);">CZ8490</div>
-                    <div style="font-size:0.9rem; color:var(--color-text);">✈ China Southern Airlines · Landing at Baiyun Int'l (CAN)</div>
-                    <div style="font-size:0.85rem; color:var(--color-text-light); margin-top:0.5rem;">Day 1 morning arrival → Metro to hotel</div>
+                    <div style="font-size:0.9rem; color:var(--color-text);">✈ 04:10 Singapore (SIN) → 08:15 Guangzhou Baiyun (CAN)</div>
+                    <div style="font-size:0.85rem; color:var(--color-text-light); margin-top:0.5rem;">Day 1 · early-morning arrival → Metro to hotel</div>
                 </div>
                 <div style="background:#f0f7fa; border-radius:12px; padding:1.5rem; border-left:4px solid var(--color-day5);">
-                    <div style="font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; color:var(--color-text-light); font-weight:600;">Return · From Guangzhou</div>
+                    <div style="font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; color:var(--color-text-light); font-weight:600;">Return · Guangzhou → Kuala Lumpur</div>
                     <div style="font-family:var(--font-display); font-size:2rem; margin:0.5rem 0; color:var(--color-day5);">CZ8301</div>
-                    <div style="font-size:0.9rem; color:var(--color-text);">✈ China Southern Airlines · Departing from Baiyun Int'l (CAN)</div>
-                    <div style="font-size:0.85rem; color:var(--color-text-light); margin-top:0.5rem;">Day 5 afternoon departure → leave airport 2–3h early</div>
+                    <div style="font-size:0.9rem; color:var(--color-text);">✈ 12:40 Guangzhou Baiyun (CAN) → 17:00 Kuala Lumpur (KUL)</div>
+                    <div style="font-size:0.85rem; color:var(--color-text-light); margin-top:0.5rem;">Day 5 · midday departure → arrive airport by ~10:30</div>
                 </div>
             </div>
             <div style="margin-top:1.2rem; font-size:0.85rem; color:var(--color-text-light);">
-                ⏰ <strong>Remember:</strong> Arrive at the airport <strong>2–3 hours</strong> before departure. Keep your passport, boarding pass, and hotel details handy.
+                ⏰ <strong>Remember:</strong> International flight — arrive at the airport <strong>2–3 hours</strong> before departure (be at CAN by ~10:30 on Day 5). Keep your passport, boarding pass, and hotel details handy.
             </div>
         </div>
     </div>
@@ -1015,15 +1059,15 @@
             <div class="timeline">
                 <div class="timeline-item" style="color: var(--color-day1);">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-time">Morning · Arrival</div>
-                    <div class="timeline-title">✈ Flight CZ8490 → Guangzhou Baiyun International Airport (CAN)</div>
+                    <div class="timeline-time">Early Morning · 8:15 AM</div>
+                    <div class="timeline-title">✈ CZ8490 from Singapore (SIN) → Guangzhou Baiyun (CAN)</div>
                     <div class="timeline-desc">
-                        Land at Baiyun Airport. Take the Airport Express or Metro Line 3 to your hotel. Check in and freshen up.
+                        Touch down at 8:15 AM from Singapore. Take Metro Line 3 directly to central Guangzhou (~45–60 min). Grab a quick congee or dim sum breakfast near your hotel. If your room isn't ready yet, leave your luggage and start exploring!
                         <strong>Stay suggestion:</strong> Book near Beijing Road or Zhujiang New Town for easy metro access.
                     </div>
                     <div class="timeline-tags">
                         <span class="tag transport">🚇 Metro ~¥8</span>
-                        <span class="tag">✈ CZ8490 Arrival</span>
+                        <span class="tag">✈ 04:10→08:15 SIN→CAN</span>
                     </div>
                 </div>
 
@@ -1277,89 +1321,85 @@
     <div class="day-card fade-in">
         <div class="day-header" style="background: linear-gradient(135deg, var(--color-day4), #1a5276);">
             <div class="day-num">Day 4</div>
-            <h3>Day Trip: Foshan or Baiyun Mountain</h3>
-            <div class="day-theme">Choose your adventure — martial arts heritage or mountain hiking</div>
+            <h3>Food Hunting & Shopping — Free & Easy</h3>
+            <div class="day-theme">Markets, food streets, malls — no itinerary to rush, just eat and explore 🛍</div>
         </div>
         <div class="day-body">
             <div class="timeline">
-                <!-- OPTION A -->
                 <div class="timeline-item" style="color: var(--color-day4);">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-time">Option A · Full Day</div>
-                    <div class="timeline-title">🥋 Day Trip to Foshan (佛山) — Martial Arts Capital</div>
+                    <div class="timeline-time">Morning · 8:30 AM</div>
+                    <div class="timeline-title">🏮 Qingping Market (清平市场)</div>
                     <div class="timeline-desc">
-                        Just 30 minutes by metro! Visit the <strong>Foshan Ancestral Temple</strong> (祖庙), the <strong>Ip Man Museum</strong>,
-                        and <strong>Bruce Lee's birthplace</strong>. Watch a martial arts performance at the temple grounds.
-                        Stroll through <strong>Donghua Ancient Town</strong> (东华里) for beautiful Lingnan architecture.
+                        Old-school Guangzhou market — dried seafood stalls, Chinese herbs, medicines, and local street eats.
+                        Very local, very authentic. Grab some <em>虾干 dried shrimp</em> or <em>陈皮 dried tangerine peel</em> as souvenirs.
                     </div>
                     <div class="timeline-tags">
-                        <span class="tag transport">🚇 Metro Line 1 to Foshan</span>
-                        <span class="tag photo">📸 Martial Arts Heritage</span>
-                        <span class="tag tip">💰 Temple ¥25, mostly free</span>
+                        <span class="tag photo">📸 Authentic Local Scene</span>
+                        <span class="tag tip">💰 Free to browse · Haggling OK</span>
                     </div>
                 </div>
 
                 <div class="timeline-item" style="color: var(--color-day4);">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-time">Option A · Lunch</div>
-                    <div class="timeline-title">🍳 Foshan's Famous Double-Skin Milk (双皮奶)</div>
+                    <div class="timeline-time">Late Morning · 10:30 AM</div>
+                    <div class="timeline-title">🛍 Yide Road (一德路) — Wholesale Bargain Paradise</div>
                     <div class="timeline-desc">
-                        Foshan is famous for its silky double-skin milk pudding — a silky, sweet custard dessert.
-                        Try it at <strong>Renxin Double-Skin Milk</strong> (仁信老铺). Also sample Foshan's special rice dumplings (裹蒸粽).
+                        Guangzhou's busiest wholesale street — toys, stickers, candy, dried goods, and seafood.
+                        Great for <strong>cheap souvenir hunting</strong>: phone cases, trinkets, and snack packs you can't find back home.
                     </div>
                     <div class="timeline-tags">
-                        <span class="tag food">🍮 Famous Dessert</span>
-                    </div>
-                </div>
-
-                <!-- OPTION B -->
-                <div class="timeline-item" style="color: var(--color-day4);">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-time">Option B · Full Day</div>
-                    <div class="timeline-title">⛰ Baiyun Mountain (白云山)</div>
-                    <div class="timeline-desc">
-                        Guangzhou's beloved "back garden" — a lush mountain park right in the city. Take the cable car up,
-                        hike the scenic trails, and enjoy panoramic views of the entire city. Visit <strong>Mingchun Garden</strong> and the
-                        <strong>Star Lake</strong> along the way.
-                    </div>
-                    <div class="timeline-tags">
-                        <span class="tag photo">📸 Panoramic Views</span>
-                        <span class="tag transport">🚇 Metro to Baiyun Mountain</span>
-                        <span class="tag tip">💰 ¥5 entry + ¥25 cable car</span>
+                        <span class="tag">💰 Wholesale Prices</span>
+                        <span class="tag tip">💡 Ask prices & walk away to bargain!</span>
                     </div>
                 </div>
 
                 <div class="timeline-item" style="color: var(--color-day4);">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-time">Option B · Lunch</div>
-                    <div class="timeline-title">🍲 Mountain Picnic or Yunbing Restaurant</div>
+                    <div class="timeline-time">Lunch · 12:30 PM</div>
+                    <div class="timeline-title">🍜 Baohua Road Old Food Street (宝华路)</div>
                     <div class="timeline-desc">
-                        Pack a light picnic or eat at one of the mountain's teahouse restaurants with city views.
-                        In the evening, head to <strong>Tianhe City</strong> (天河城) for shopping, dinner, and the vibrant nightlife scene.
+                        Legendary local food street! Must-try: <strong>顺记冰室 Shunji Mango Ice Cream</strong> (since 1949),
+                        <strong>陈添记 Fish Skin</strong> (广州名小吃), and <strong>wonton noodles</strong> (云吞面). Everything is under ¥20.
                     </div>
                     <div class="timeline-tags">
-                        <span class="tag food">🍲 Mountain Dining</span>
+                        <span class="tag food">🍦 顺记芒果雪糕 · 陈添记鱼皮</span>
+                        <span class="tag tip">💰 Most dishes ¥10–20</span>
                     </div>
                 </div>
 
                 <div class="timeline-item" style="color: var(--color-day4);">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-time">Evening · 7:30 PM</div>
-                    <div class="timeline-title">🍜 Dinner at Zhujiang Beer Street (珠江琶醍)</div>
+                    <div class="timeline-time">Afternoon · 2:00 PM</div>
+                    <div class="timeline-title">🏬 Tianhe Shopping District (天河商圈)</div>
                     <div class="timeline-desc">
-                        End the day at Guangzhou's riverside bar and dining strip. Craft beers, live music, and a stunning river view.
-                        Perfect for a relaxed evening after a full day of exploration.
+                        Modern Guangzhou — <strong>Tianhe City (天河城)</strong>, <strong>Grandview Mall (正佳广场)</strong>, and the vast
+                        underground shopping arcades. Grab anything you still need, from clothes to bubble tea.
                     </div>
                     <div class="timeline-tags">
-                        <span class="tag food">🍺 Riverside Dining</span>
-                        <span class="tag">🎵 Live Music</span>
+                        <span class="tag">🛍 Malls · A/C · Free WiFi</span>
+                        <span class="tag tip">🚇 Metro Line 1 to Tianhe</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day4);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Evening · 6:30 PM</div>
+                    <div class="timeline-title">🌃 Huacheng Square (花城广场) & Zhujiang Beer Street (珠江琶醍)</div>
+                    <div class="timeline-desc">
+                        Free riverside night views of Canton Tower as it lights up. Then stroll to <strong>琶醍 Beer Street</strong> —
+                        craft beers, live music, and an unforgettable vibe.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Canton Tower at Night</span>
+                        <span class="tag food">🍺 琶醍 Craft Beer & Dinner</span>
                     </div>
                 </div>
             </div>
 
             <div class="day-highlight">
-                <div class="hl-title">💡 Day 4 Tip — Budget Choice</div>
-                <p style="font-size:0.93rem;">Both options are <strong>metro-accessible (no taxis needed)</strong>. Baiyun Mountain is the cheaper choice (~¥30 entry + cable car), while Foshan is slightly more (¥25 temple + food). Skip the cable car and hike the mountain trails to save even more — the views are just as rewarding!</p>
+                <div class="hl-title">💡 Day 4 Tip — Food Hunter's Guide</div>
+                <p style="font-size:0.93rem;">Today has <strong>zero entrance fees</strong> — your only spend is food, drinks, and whatever souvenirs you buy! Carry small cash for market haggling, and always ask prices before buying (讨价还价 is expected). Keep your phone charged — you'll want photos of all the food!</p>
             </div>
         </div>
     </div>
@@ -1370,8 +1410,8 @@
     <div class="day-card fade-in">
         <div class="day-header" style="background: linear-gradient(135deg, var(--color-day5), #6c3483);">
             <div class="day-num">Day 5</div>
-            <h3>Temple, Markets & Departure</h3>
-            <div class="day-theme">Final morning explorations, souvenir shopping, and a fond farewell</div>
+            <h3>Quick Temple, Snacks & Departure</h3>
+            <div class="day-theme">A peaceful morning visit, last-minute souvenirs, then off to KL ✈</div>
         </div>
         <div class="day-body">
             <div class="timeline">
@@ -1380,8 +1420,8 @@
                     <div class="timeline-time">Morning · 8:00 AM</div>
                     <div class="timeline-title">🪷 Six Banyan Trees Temple (六榕寺)</div>
                     <div class="timeline-desc">
-                        One of Guangzhou's oldest Buddhist temples (dating to 537 AD). The beautiful flower pagoda is a must-see.
-                        A peaceful way to start your final day — take a moment to reflect on your trip.
+                        One of Guangzhou's oldest Buddhist temples (537 AD). The beautiful Flower Pagoda is a must-see.
+                        A peaceful way to spend ~45 minutes on your final morning.
                     </div>
                     <div class="timeline-tags">
                         <span class="tag photo">📸 Ancient Pagoda</span>
@@ -1391,64 +1431,49 @@
 
                 <div class="timeline-item" style="color: var(--color-day5);">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-time">Mid-Morning · 10:00 AM</div>
-                    <div class="timeline-title">☕ Morning Tea at Jianshe Liu Ma Lu (建设六马路)</div>
+                    <div class="timeline-time">Mid-Morning · 9:00 AM</div>
+                    <div class="timeline-title">🍪 Grab Egg Tarts & Almond Cookies (蛋挞 / 杏仁饼)</div>
                     <div class="timeline-desc">
-                        Guangzhou's "cafe street" with a European vibe. Enjoy a final cup of tea or coffee at a charming cafe,
-                        or do one last round of dim sum — this time at a quieter neighborhood teahouse.
+                        Swing by a bakery near the temple — <strong>Pan Xi Restaurant area</strong> has great egg tart shops.
+                        Also pick up <em>杏仁饼 almond cookies</em> and <em>鸡仔饼</em> to bring home. Great budget souvenirs!
                     </div>
                     <div class="timeline-tags">
-                        <span class="tag food">☕ Cafe Culture</span>
+                        <span class="tag food">🍪 Souvenir Snacks</span>
+                        <span class="tag tip">💰 ~¥15–30</span>
                     </div>
                 </div>
 
                 <div class="timeline-item" style="color: var(--color-day5);">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-time">Late Morning · 11:30 AM</div>
-                    <div class="timeline-title">🛍 Souvenir Shopping at Wuxiang Market or Liwan Plaza</div>
+                    <div class="timeline-time">Late Morning · 10:15 AM</div>
+                    <div class="timeline-title">🚇 Head to Baiyun International Airport (CAN)</div>
                     <div class="timeline-desc">
-                        Pick up last-minute souvenirs: Cantonese tea sets, dried seafood, herbal tea packs, chopsticks,
-                        and silk products. Bargain-friendly markets! Don't forget to grab some <em>egg tarts</em> and <em>almond cookies</em> for the road.
+                        Take Metro Line 3 from downtown directly to the airport (~50 minutes, ~¥8). Flight <strong>CZ8301 departs at 12:40 PM</strong> — arriving by 10:45–11:00 AM gives you plenty of time for check-in and immigration.
                     </div>
                     <div class="timeline-tags">
-                        <span class="tag">🛍 Souvenirs</span>
-                        <span class="tag food">🍪 Snacks to Take Home</span>
+                        <span class="tag transport">🚇 Metro ~¥8 · ~50 min</span>
+                        <span class="tag">✈ CZ8301 12:40 → 17:00</span>
                     </div>
                 </div>
 
                 <div class="timeline-item" style="color: var(--color-day5);">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-time">Lunch · 1:00 PM</div>
-                    <div class="timeline-title">🍚 Final Cantonese Feast</div>
+                    <div class="timeline-time">Late Morning · 10:45 AM</div>
+                    <div class="timeline-title">✈ Arrive at CAN Airport — Check-in & Immigration</div>
                     <div class="timeline-desc">
-                        One last memorable meal! Try <strong>roasted goose rice</strong> (烧鹅饭) or a <strong>Cantonese claypot rice</strong> (煲仔饭)
-                        at a local restaurant. Savor every bite — Guangzhou food will be the thing you miss most!
+                        Clear immigration, browse duty-free for any last treats, then head to your gate. You made it!
+                        <strong>再见广州 · 再见广州 — see you next time!</strong>
                     </div>
                     <div class="timeline-tags">
-                        <span class="tag food">🍚 Cantonese Farewell</span>
-                    </div>
-                </div>
-
-                <div class="timeline-item" style="color: var(--color-day5);">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-time">Afternoon · 3:00 PM</div>
-                    <div class="timeline-title">✈ Flight CZ8301 — Head to Airport & Departure</div>
-                    <div class="timeline-desc">
-                        Take the Airport Express or Metro Line 3 back to Baiyun International Airport.
-                        Allow 2–3 hours before your flight for check-in and security.
-                        <strong>Happy travels! 祝你旅途愉快!</strong>
-                    </div>
-                    <div class="timeline-tags">
-                        <span class="tag transport">🚇 Metro Line 3 to Airport</span>
-                        <span class="tag tip">💰 ~¥8</span>
-                        <span class="tag">✈ CZ8301 Departure</span>
+                        <span class="tag tip">Passport ready!</span>
+                        <span class="tag">✈ Board by ~12:10 PM</span>
                     </div>
                 </div>
             </div>
 
             <div class="day-highlight">
-                <div class="hl-title">💡 Day 5 Tip — Budget Saver</div>
-                <p style="font-size:0.93rem;">Most of today is <strong>completely free</strong> — the Six Banyan Trees Temple, cafe strolling, and the Flower Market all cost nothing! Take a last free walk through <strong>Flower Market (花城广场)</strong> near the CBD for a beautiful farewell photo before heading to the airport.</p>
+                <div class="hl-title">💡 Day 5 Tip — Departure Day</div>
+                <p style="font-size:0.93rem;">With a <strong>12:40 PM departure</strong>, your morning is short but sweet! Keep it simple: temple + snacks + airport. Grab a quick congee or rice noodle roll (肠粉) near your hotel before leaving if hungry. <strong>Happy travels! 祝你旅途愉快!</strong> 🌟</p>
             </div>
         </div>
     </div>
@@ -1466,8 +1491,7 @@
         <button class="map-tab active" data-day="1">Day 1</button>
         <button class="map-tab" data-day="2">Day 2</button>
         <button class="map-tab" data-day="3">Day 3</button>
-        <button class="map-tab" data-day="4a">Day 4 · Foshan</button>
-        <button class="map-tab" data-day="4b">Day 4 · Mountain</button>
+        <button class="map-tab" data-day="4">Day 4</button>
         <button class="map-tab" data-day="5">Day 5</button>
     </div>
 
@@ -1951,36 +1975,24 @@
                 { name: 'Tianzi Wharf (天字码头)', detail: 'Pearl River Night Cruise departure', lat: 23.1195, lng: 113.2750 }
             ]
         },
-        '4a': {
-            title: 'Day 4 · Foshan Martial Arts Trip',
+        '4': {
+            title: 'Day 4 · Food Hunting & Shopping',
             color: '#2980b9',
             points: [
-                { name: 'Foshan Ancestral Temple (祖庙)', detail: 'Cantonese & martial arts heritage | ¥25', lat: 23.0300, lng: 113.1150 },
-                { name: 'Ip Man Museum', detail: 'Wing Chun grandmaster legacy', lat: 23.0240, lng: 113.1110 },
-                { name: 'Donghua Ancient Town (东华里)', detail: 'Lingnan architecture & culture', lat: 23.0210, lng: 113.1100 },
-                { name: 'Zhujiang Beer Street (琶醍)', detail: 'Riverside dinner & craft beer', lat: 23.0950, lng: 113.3490 }
-            ]
-        },
-        '4b': {
-            title: 'Day 4 · Baiyun Mountain Hiking',
-            color: '#2980b9',
-            points: [
-                { name: 'Baiyun Mountain South Gate (白云山)', detail: 'City panoramic views | ¥5 + cable car ¥25', lat: 23.1750, lng: 113.2940 },
-                { name: 'Mingchun Garden (明珠楼)', detail: 'Scenic lakeside garden in the park', lat: 23.1940, lng: 113.2850 },
-                { name: 'Star Lake', detail: 'Tranquil lake viewpoint', lat: 23.1800, lng: 113.2880 },
-                { name: 'Tianhe City Mall (天河城)', detail: 'Shopping & dinner stop', lat: 23.1325, lng: 113.3185 },
+                { name: 'Qingping Market (清平市场)', detail: 'Dried seafood, herbs & local eats | Free', lat: 23.1205, lng: 113.2420 },
+                { name: 'Yide Road (一德路)', detail: 'Wholesale toys, snacks & trinkets', lat: 23.1190, lng: 113.2620 },
+                { name: 'Baohua Road Food Street (宝华路)', detail: '顺记冰室, 陈添记鱼皮 & wonton noodles', lat: 23.1150, lng: 113.2440 },
+                { name: 'Tianhe Shopping District (天河商圈)', detail: 'Malls, arcades & bubble tea', lat: 23.1325, lng: 113.3185 },
                 { name: 'Zhujiang Beer Street (琶醍)', detail: 'Riverside dinner & craft beer', lat: 23.0950, lng: 113.3490 }
             ]
         },
         '5': {
-            title: 'Day 5 · Temples, Souvenirs & Departure',
+            title: 'Day 5 · Temple, Snacks & Departure',
             color: '#8e44ad',
             points: [
                 { name: 'Six Banyan Trees Temple (六榕寺)', detail: '1,500-year-old pagoda temple | Free', lat: 23.1315, lng: 113.2585 },
-                { name: 'Jianshe Liu Ma Lu (建设六马路)', detail: 'Cafe street for morning tea', lat: 23.1310, lng: 113.2790 },
-                { name: 'Liwan Plaza / Market', detail: 'Souvenir & snack shopping', lat: 23.1210, lng: 113.2380 },
-                { name: 'Final Cantonese Lunch', detail: 'Roast goose or claypot rice', lat: 23.1150, lng: 113.2440 },
-                { name: 'Guangzhou Baiyun Airport', detail: 'Metro Line 3 or Airport Express', lat: 23.3924, lng: 113.2988 }
+                { name: 'Egg Tarts & Almond Cookies (蛋挞/杏仁饼)', detail: 'Souvenir snacks near the temple', lat: 23.1290, lng: 113.2560 },
+                { name: 'Guangzhou Baiyun Airport', detail: 'Metro Line 3 · depart by ~10:15', lat: 23.3924, lng: 113.2988 }
             ]
         }
     };
@@ -2025,9 +2037,12 @@
         routeLayers.forEach(layer => routeMap.removeLayer(layer));
         routeLayers = [];
 
-        // Update legend
-        document.getElementById('map-legend-title').textContent = route.title;
-        document.getElementById('map-legend-count').textContent = route.points.length + ' stops';
+        // Update legend (language-aware)
+        const isCn = (typeof activeLang !== 'undefined' && activeLang === 'cn');
+        document.getElementById('map-legend-title').textContent =
+            (isCn && MAP_TITLES_CN[key]) ? MAP_TITLES_CN[key] : route.title;
+        document.getElementById('map-legend-count').textContent =
+            isCn ? (route.points.length + ' 个站点') : (route.points.length + ' stops');
 
         // Update stop list
         const stopListEl = document.getElementById('map-stop-items');
@@ -2076,8 +2091,11 @@
             // Update the stop list & legend even if the map can't render
             const route = ROUTES[currentRouteKey];
             if (!route) return;
-            document.getElementById('map-legend-title').textContent = route.title;
-            document.getElementById('map-legend-count').textContent = route.points.length + ' stops';
+            const _isCn = (typeof activeLang !== 'undefined' && activeLang === 'cn');
+            document.getElementById('map-legend-title').textContent =
+                (_isCn && MAP_TITLES_CN[currentRouteKey]) ? MAP_TITLES_CN[currentRouteKey] : route.title;
+            document.getElementById('map-legend-count').textContent =
+                _isCn ? (route.points.length + ' 个站点') : (route.points.length + ' stops');
             const stopListEl = document.getElementById('map-stop-items');
             stopListEl.innerHTML = '';
             route.points.forEach((point, i) => {
@@ -2111,6 +2129,426 @@
         const url = `https://uri.amap.com/search?keyword=${encodeURIComponent(p.name)}&callnative=1`;
         window.open(url, '_blank');
     }
+
+    // ===== LANGUAGE TOGGLE (EN | 中文) =====
+    let activeLang = 'en';
+    const MAP_TITLES_CN = {
+        '1': '第一天 · 抵达与老广州',
+        '2': '第二天 · 越秀、白云与天际线',
+        '3': '第三天 · 沙面岛与文化宝藏',
+        '4': '第四天 · 美食寻味与购物',
+        '5': '第五天 · 寺庙、小吃与返程'
+    };
+
+    function normText(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
+
+    // Translation dictionary: normalized English textContent -> Chinese innerHTML
+    const LANG_DICT = {
+        // NAV
+        'Overview': '概览',
+        'Flights': '航班',
+        'Day 1': '第一天',
+        'Day 2': '第二天',
+        'Day 3': '第三天',
+        'Day 4': '第四天',
+        'Day 5': '第五天',
+        '🗺 Route Maps': '🗺 路线地图',
+        'Food Guide': '美食指南',
+        'Tips': '贴士',
+        'Packing': '行李清单',
+        'Budget': '预算',
+        'Phrases': '常用短语',
+
+        // HERO
+        '✈ Travel Itinerary': '✈ 旅行行程',
+        'A <strong>5-day, 4-night</strong> journey through the <strong>Flower City</strong> — where Cantonese cuisine, ancient temples, and modern marvels collide.': '一场<strong>5天4夜</strong>的花城之旅——在这里，粤菜、古寺与现代地标交相辉映。',
+        '📅 November 2026': '📅 2026年11月',
+        '🌡 18–26°C · Pleasant': '🌡 18–26°C · 舒适',
+        '💰 ¥2,000 Budget': '💰 预算 ¥2,000',
+        '🗣 Cantonese / Mandarin': '🗣 粤语 / 普通话',
+        '↓ Scroll to explore': '↓ 下滑探索',
+
+        // OVERVIEW
+        'Your Guangzhou Adventure': '广州之旅',
+        'From dim sum mornings to Pearl River sunsets — here\'s what awaits you in one of China\'s most vibrant cities.': '从早茶清晨到珠江日落——这就是广州这座活力之城的精彩旅程。',
+        'Modern Marvels': '现代地标',
+        'Explore the futuristic Canton Tower, Zhujiang New Town\'s skyline, and Guangzhou Circle — architecture that will blow your mind.': '探索未来感十足的广州塔、珠江新城的天际线和广州圆大厦——令人叹为观止的建筑。',
+        'Ancient Charm': '古城韵味',
+        'Wander through Chen Clan Ancestral Hall, Yuexiu Park\'s Five Rams, and the historic Shamian Island with its colonial-era buildings.': '漫步陈家祠、越秀公园的五羊雕像，以及充满殖民时期建筑的沙面岛。',
+        'Food Paradise': '美食天堂',
+        'Guangzhou is the birthplace of dim sum and Cantonese cuisine. Every meal is a celebration — from street snacks to fine dining.': '广州是点心和粤菜的发源地。从街头小吃到精致佳肴，每一餐都是盛宴。',
+        'November Weather': '十一月天气',
+        'Pleasant temps of 18–26°C, low humidity, and minimal rain — the best time to visit Guangzhou. Light layers are all you need!': '气温18–26°C舒适宜人，湿度低、少雨——这是游览广州的最佳时节。轻便多层穿搭就够了！',
+
+        // FLIGHTS
+        'Your Flight Record': '航班记录',
+        'Outbound · Singapore → Guangzhou': '去程 · 新加坡 → 广州',
+        '✈ 04:10 Singapore (SIN) → 08:15 Guangzhou Baiyun (CAN)': '✈ 04:10 新加坡 (SIN) → 08:15 广州白云 (CAN)',
+        'Day 1 · early-morning arrival → Metro to hotel': '第一天 · 清晨抵达 → 地铁到酒店',
+        'Return · Guangzhou → Kuala Lumpur': '回程 · 广州 → 吉隆坡',
+        '✈ 12:40 Guangzhou Baiyun (CAN) → 17:00 Kuala Lumpur (KUL)': '✈ 12:40 广州白云 (CAN) → 17:00 吉隆坡 (KUL)',
+        'Day 5 · midday departure → arrive airport by ~10:30': '第五天 · 中午出发 → 约10:30到机场',
+        '⏰ <strong>Remember:</strong> International flight — arrive at the airport <strong>2–3 hours</strong> before departure (be at CAN by ~10:30 on Day 5). Keep your passport, boarding pass, and hotel details handy.': '⏰ <strong>提醒：</strong>国际航班需在起飞前<strong>2–3小时</strong>到达机场（第五天约10:30抵达广州白云机场）。请随身备好护照、登机牌和酒店信息。',
+
+        // DAY 1
+        'Arrival & Old Guangzhou': '抵达与老广州',
+        'Settle in, explore the historic heart, and taste your first Cantonese feast': '安顿下来，探索历史中心，品尝第一顿粤式大餐',
+        'Early Morning · 8:15 AM': '清晨 · 上午8:15',
+        '✈ CZ8490 from Singapore (SIN) → Guangzhou Baiyun (CAN)': '✈ CZ8490 新加坡 (SIN) → 广州白云 (CAN)',
+        'Touch down at 8:15 AM from Singapore. Take Metro Line 3 directly to central Guangzhou (~45–60 min). Grab a quick congee or dim sum breakfast near your hotel. If your room isn\'t ready yet, leave your luggage and start exploring! <strong>Stay suggestion:</strong> Book near Beijing Road or Zhujiang New Town for easy metro access.': '上午8:15从新加坡抵达。乘坐地铁3号线直达广州市中心（约45–60分钟）。在酒店附近来一碗热粥或点心早餐。如果房间还没好，先寄存行李就出发吧！<strong>住宿建议：</strong>预订北京路或珠江新城附近，方便坐地铁。',
+        '🚇 Metro ~¥8': '🚇 地铁 ~¥8',
+        '✈ 04:10→08:15 SIN→CAN': '✈ 04:10→08:15 新加坡→广州',
+        'Lunch · 12:00 PM': '午餐 · 中午12:00',
+        '🥟 Dim Sum at Tao Tao Ju (陶陶居)': '🥟 陶陶居 早茶点心',
+        'Start your trip the Cantonese way — with yum cha! This legendary teahouse has been serving dim sum since 1880. Must-order: <em>har gow</em> (shrimp dumplings), <em>char siu bao</em> (BBQ pork buns), and <em>cheung fun</em> (rice noodle rolls).': '用饮茶开启你的粤式之旅吧！这家自1880年起就供应点心的百年老字号茶楼。必点：<em>虾饺</em>、<em>叉烧包</em>和<em>肠粉</em>。',
+        '🍽 Cantonese Dim Sum': '🍽 粤式点心',
+        '💰 ~¥50-80/person': '💰 人均 ~¥50-80',
+        'Afternoon · 2:00 PM': '下午 · 2:00',
+        '🏛 Chen Clan Ancestral Hall (陈家祠)': '🏛 陈家祠',
+        'A masterpiece of Lingnan architecture! This Qing Dynasty clan hall features incredible wood, stone, and brick carvings. The complex now houses the Guangdong Folk Art Museum — allow 1.5–2 hours to explore.': '岭南建筑的代表作！这座清代宗祠拥有令人惊叹的木雕、石雕和砖雕。如今这里是广东民间工艺博物馆——预留1.5–2小时慢慢参观。',
+        '📸 Stunning architecture': '📸 精美建筑',
+        '💰 ¥10 entry': '💰 门票 ¥10',
+        'Late Afternoon · 4:30 PM': '傍晚 · 4:30',
+        '🛍 Beijing Road Pedestrian Street (北京路)': '🛍 北京路步行街',
+        'Stroll down this 2,000-year-old shopping street! See the preserved ancient road layers under glass panels, browse shops, and grab street snacks along the way.': '漫步这条有两千年历史的商业街！透过玻璃面板可以看到古代路面遗址，逛逛商店，顺便吃点街头小吃。',
+        '🛍 Shopping & History': '🛍 购物与历史',
+        'Evening · 7:00 PM': '晚上 · 7:00',
+        '🌃 Shangxiajiu Pedestrian Street (上下九)': '🌃 上下九步行街',
+        'Neon-lit Qilou (arcade buildings) line this bustling street — a perfect evening stroll. Sample local snacks: double-skin milk pudding, shrimp rice rolls, and stinky tofu. End with a bowl of Guangzhou fish noodles.': '霓虹闪烁的骑楼林立在这条热闹的街道——是完美的晚间漫步去处。尝尝本地小吃：双皮奶、虾仁肠粉和臭豆腐。最后来一碗广州鱼蛋粉收尾。',
+        '🍢 Street Food Heaven': '🍢 街头美食天堂',
+        '📸 Qilou Architecture': '📸 骑楼建筑',
+        '💡 Day 1 Tip — Budget Saver': '💡 第一天贴士 · 省钱妙招',
+        'Set up <strong>Alipay metro QR</strong> for tap-and-go — no card deposit needed! Or get a <strong>Guangzhou Tong Card (羊城通)</strong> at any metro station. Also: <strong>many of today\'s spots are FREE</strong> — Beijing Road, Shangxiajiu, and the street food scene cost very little!': '设置<strong>支付宝地铁乘车码</strong>，即刷即走——无需押金！或在任意地铁站购买<strong>羊城通</strong>。另外：<strong>今天很多地方都免费</strong>——北京路、上下九和街头美食花不了多少钱！',
+
+        // DAY 2
+        'Yuexiu, Baiyun & Skyline Views': '越秀、白云与天际线景观',
+        'Park exploration, iconic landmarks, and Guangzhou\'s modern skyline at sunset': '公园探索、标志性地标，以及日落时分的广州现代天际线',
+        'Morning · 8:30 AM': '上午 · 8:30',
+        '🌳 Yuexiu Park & Five Rams Sculpture (越秀公园)': '🌳 越秀公园与五羊雕像',
+        'Guangzhou\'s largest urban park and home to the iconic Five Rams statue — the city\'s symbol! Also visit the Zhenhai Tower (Five-Story Tower) which houses a history museum. A peaceful morning walk among banyan trees.': '广州最大的城市公园，拥有城市象征——五羊雕像！还可以参观镇海楼（五层楼），内有历史博物馆。在榕树下享受宁静的晨间漫步。',
+        '📸 Five Rams Icon': '📸 五羊雕像',
+        '💰 Free': '💰 免费',
+        'Mid-Morning · 10:30 AM': '上午 · 10:30',
+        '🏛 Sun Yat-sen Memorial Hall (中山纪念堂)': '🏛 中山纪念堂',
+        'A stunning octagonal hall surrounded by gardens. The architecture blends traditional Chinese and Western styles. It\'s just a short walk from Yuexiu Park.': '一座被花园环绕的八角形宏伟建筑，融合了中西建筑风格。从越秀公园步行即可到达。',
+        'Lunch · 12:30 PM': '午餐 · 12:30',
+        '🍜 Wonton Noodles at Ngau Kee Beef (牛记)': '🍜 牛记云吞面',
+        'Try classic Guangzhou wonton noodles (云吞面) — silky shrimp wontons in rich broth with springy egg noodles. A staple of Cantonese comfort food. Pair with braised beef brisket!': '尝尝经典的广州云吞面——鲜滑的虾仁云吞配上浓郁汤头和弹牙的蛋面。这是粤式暖心美食的代表。搭配一份牛腩更棒！',
+        '🍜 Cantonese Noodles': '🍜 粤式面条',
+        '💰 ~¥30-50': '💰 人均 ~¥30-50',
+        '🏙 Zhujiang New Town (珠江新城)': '🏙 珠江新城',
+        'Guangzhou\'s modern CBD! Walk along the Zhujiang River, admire the IFC Tower and Guangzhou Opera House (Zaha Hadid design). Visit the Guangdong Museum (free, just need ID) for a deep dive into Lingnan culture.': '广州的现代中央商务区！沿着珠江漫步，欣赏广州国际金融中心和广州大剧院（扎哈·哈迪德设计）。参观广东省博物馆（免费，凭身份证入内）深入了解岭南文化。',
+        '📸 Modern Skyline': '📸 现代天际线',
+        '🎭 Opera House': '🎭 大剧院',
+        'Evening · 6:30 PM': '傍晚 · 6:30',
+        '🗼 Canton Tower (广州塔) — The Pearl River Night View': '🗼 广州塔 · 珠江夜景',
+        'The crown jewel of any Guangzhou trip! Head up to the observation deck (488m!) for breathtaking 360° views. Book tickets online in advance to skip the queue. Stay for the stunning night views — the tower itself lights up in rainbow colors!': '广州之行的明珠！登上488米高的观景台，欣赏令人惊叹的360°全景。提前在线购票可免排队。留下来欣赏璀璨夜景——塔身会亮起七彩灯光！',
+        '📸 Must-Visit!': '📸 必游！',
+        '💰 ¥150 or FREE ground views': '💰 门票¥150，或免费地面观景',
+        '🚇 Metro to Canton Tower Station': '🚇 地铁到广州塔站',
+        '💡 Day 2 Tip — Save Money!': '💡 第二天贴士 · 省钱！',
+        'Canton Tower is pricey (¥150). <strong>Budget option:</strong> Skip the observation deck and enjoy the stunning views from the ground for free — the tower lights up beautifully at night! Or visit the <strong>free outdoor observation area</strong> at Zhujiang New Town instead. If you do go up, buy tickets on <strong>Trip.com</strong> at least 1 day in advance for discounts.': '广州塔票价较贵（¥150）。<strong>省钱方案：</strong>不登塔，在地面免费欣赏壮丽夜景——晚上塔身灯光非常美！或者去珠江新城的<strong>免费户外观景区</strong>。如果坚持登塔，请提前至少1天在<strong>Trip.com</strong>购票享优惠。',
+
+        // DAY 3
+        'Shamian Island & Cultural Gems': '沙面岛与文化宝藏',
+        'Colonial charm, river breezes, and hidden cultural treasures': '殖民地风情、江风与隐藏的文化瑰宝',
+        'Morning · 9:00 AM': '上午 · 9:00',
+        '🏝 Shamian Island (沙面岛)': '🏝 沙面岛',
+        'A magical pedestrian island that feels like a European village. Lined with 19th-century colonial buildings, banyan-shaded walkways, and charming cafes. Perfect for a slow morning stroll and photography. Don\'t miss the former British and French Concession buildings!': '一座宛如欧洲小镇的迷人步行岛。两旁是19世纪的殖民建筑、榕树掩映的小径和别致的咖啡馆。非常适合悠闲的晨间漫步和拍照。千万别错过当年的英法租界建筑！',
+        '📸 Photography Paradise': '📸 摄影天堂',
+        '🐟 Seafood Lunch at Liwan Lake Park Area': '🐟 荔湾湖公园一带海鲜午餐',
+        'Head to the Liwan district for authentic Cantonese seafood. Try steamed fish with ginger and scallion, salt-and-pepper prawns, and stir-fried water spinach with garlic. This is where locals eat!': '前往荔湾区品尝地道粤式海鲜。试试姜葱蒸鱼、椒盐虾和蒜蓉炒通菜。这才是本地人吃的地方！',
+        '🐟 Cantonese Seafood': '🐟 粤式海鲜',
+        '💰 ~¥60-100/person': '💰 人均 ~¥60-100',
+        '🌺 Liwan Lake Park (荔湾湖公园)': '🌺 荔湾湖公园',
+        'A serene traditional Chinese garden park with lotus ponds, willow trees, and covered bridges. If you\'re lucky, you\'ll catch local musicians practicing Cantonese opera in the pavilions!': '一座宁静的传统中式园林公园，有荷花池、垂柳和廊桥。幸运的话，还能看到本地乐师在亭子里排练粤剧！',
+        '🌿 Traditional Garden': '🌿 传统园林',
+        'Late Afternoon · 4:00 PM': '下午 · 4:00',
+        '🎨 Xiguan Folk Art & Mansion Tour': '🎨 西关民间艺术与老宅之旅',
+        'Explore the historic Xiguan (西关) neighborhood — the heart of old Guangzhou. Visit the <strong>Lingnan Impression</strong> shops, watch traditional candy-pulling art, and see exquisite Xiguan-style tiled houses. If time allows, visit the <strong>Shijing Xuantai Museum</strong> hidden underground.': '探索历史悠久的西关街区——老广州的核心地带。逛逛<strong>岭南印象</strong>店铺，观看传统糖画艺术，欣赏精美的西关趟栊门老屋。时间充裕的话，还可参观隐藏在地下的<strong>石井玄台博物馆</strong>。',
+        '🎭 Cultural Experience': '🎭 文化体验',
+        '📸 Tiled Houses': '📸 趟栊门老屋',
+        '🚢 Pearl River Night Cruise (珠江夜游)': '🚢 珠江夜游',
+        'The ultimate Guangzhou evening! Board a cruise from Tianzi Wharf and glide past the illuminated Canton Tower, Liede Bridge, and the stunning CBD skyline reflected in the river. Take a seat on the open deck and soak it all in.': '广州夜晚的极致体验！从天字码头上船，缓缓驶过灯光璀璨的广州塔、猎德大桥，以及倒映在江中的CBD天际线。在露天甲板上找个位置，尽情沉醉其中。',
+        '📸 Unmissable Views': '📸 不容错过的景色',
+        '💰 ~¥60-80 (discounted)': '💰 ~¥60-80（优惠价）',
+        '🚇 Metro to Tianzi Wharf Station': '🚇 地铁到天字码头站',
+        '💡 Day 3 Tip — Save on Cruise!': '💡 第三天贴士 · 游船省钱！',
+        '<strong>Budget alternative:</strong> Skip the cruise and walk along the <strong>Zhujiang River Promenade</strong> for FREE — you\'ll still get stunning skyline views and can see the Canton Tower light up! If you do cruise, the evening cruise (7:00–9:00 PM) is best. Book via <strong>Trip.com</strong> for discounted tickets (~¥60-80).': '<strong>省钱替代：</strong>不坐游船，改在<strong>珠江滨江步道</strong>免费漫步——同样能看到壮丽天际线和广州塔亮灯！如果坐船，晚上的班次（19:00–21:00）最佳。通过<strong>Trip.com</strong>购票可享优惠（约¥60-80）。',
+
+        // DAY 4
+        'Food Hunting & Shopping — Free & Easy': '美食寻味与购物 · 自由轻松',
+        'Markets, food streets, malls — no itinerary to rush, just eat and explore 🛍': '市场、美食街、商场——无需赶行程，尽情吃喝逛 🛍',
+        '🏮 Qingping Market (清平市场)': '🏮 清平市场',
+        'Old-school Guangzhou market — dried seafood stalls, Chinese herbs, medicines, and local street eats. Very local, very authentic. Grab some <em>虾干 dried shrimp</em> or <em>陈皮 dried tangerine peel</em> as souvenirs.': '老广州风情市场——干海鲜摊、中药材、药材和本地街头小吃。非常地道、非常正宗。可以买点<em>虾干</em>或<em>陈皮</em>当手信。',
+        '📸 Authentic Local Scene': '📸 地道本地风情',
+        '💰 Free to browse · Haggling OK': '💰 免费逛 · 可讲价',
+        'Late Morning · 10:30 AM': '上午 · 10:30',
+        '🛍 Yide Road (一德路) — Wholesale Bargain Paradise': '🛍 一德路 · 批发购物天堂',
+        'Guangzhou\'s busiest wholesale street — toys, stickers, candy, dried goods, and seafood. Great for <strong>cheap souvenir hunting</strong>: phone cases, trinkets, and snack packs you can\'t find back home.': '广州最热闹的批发街——玩具、贴纸、糖果、干货和海鲜。非常适合<strong>淘便宜手信</strong>：手机壳、小饰品和国内买不到的零食。',
+        '💰 Wholesale Prices': '💰 批发价',
+        '💡 Ask prices & walk away to bargain!': '💡 问价后离开以讲价！',
+        '🍜 Baohua Road Old Food Street (宝华路)': '🍜 宝华路老字号美食街',
+        'Legendary local food street! Must-try: <strong>顺记冰室 Shunji Mango Ice Cream</strong> (since 1949), <strong>陈添记 Fish Skin</strong> (广州名小吃), and <strong>wonton noodles</strong> (云吞面). Everything is under ¥20.': '传奇的本地美食街！必试：<strong>顺记冰室芒果雪糕</strong>（始于1949年）、<strong>陈添记鱼皮</strong>（广州名小吃）和<strong>云吞面</strong>。样样都在¥20以内。',
+        '🍦 顺记芒果雪糕 · 陈添记鱼皮': '🍦 顺记芒果雪糕 · 陈添记鱼皮',
+        '💰 Most dishes ¥10–20': '💰 大多数菜品 ¥10–20',
+        '🏬 Tianhe Shopping District (天河商圈)': '🏬 天河商圈',
+        'Modern Guangzhou — <strong>Tianhe City (天河城)</strong>, <strong>Grandview Mall (正佳广场)</strong>, and the vast underground shopping arcades. Grab anything you still need, from clothes to bubble tea.': '现代广州——<strong>天河城</strong>、<strong>正佳广场</strong>和庞大的地下商业街。从衣服到奶茶，缺什么都能在这里补齐。',
+        '🛍 Malls · A/C · Free WiFi': '🛍 商场 · 空调 · 免费WiFi',
+        '🚇 Metro Line 1 to Tianhe': '🚇 地铁1号线到天河',
+        '🌃 Huacheng Square (花城广场) & Zhujiang Beer Street (珠江琶醍)': '🌃 花城广场与珠江琶醍',
+        'Free riverside night views of Canton Tower as it lights up. Then stroll to <strong>琶醍 Beer Street</strong> — craft beers, live music, and an unforgettable vibe.': '免费欣赏广州塔亮灯的江边夜景。然后漫步到<strong>琶醍啤酒街</strong>——精酿啤酒、现场音乐和难忘的氛围。',
+        '📸 Canton Tower at Night': '📸 广州塔夜景',
+        '🍺 琶醍 Craft Beer & Dinner': '🍺 琶醍精酿啤酒与晚餐',
+        '💡 Day 4 Tip — Food Hunter\'s Guide': '💡 第四天贴士 · 美食猎人指南',
+        'Today has <strong>zero entrance fees</strong> — your only spend is food, drinks, and whatever souvenirs you buy! Carry small cash for market haggling, and always ask prices before buying (讨价还价 is expected). Keep your phone charged — you\'ll want photos of all the food!': '今天<strong>零门票</strong>——你的花费只有食物、饮料和想买的手信！在市场上讲价记得带些零钱，购买前务必先问价（讨价还价是常态）。保持手机电量充足——你会想给所有美食拍照！',
+
+        // DAY 5
+        'Quick Temple, Snacks & Departure': '寺庙、小吃与返程',
+        'A peaceful morning visit, last-minute souvenirs, then off to KL ✈': '宁静的清晨参访、最后一刻的纪念品，然后飞往吉隆坡 ✈',
+        'Morning · 8:00 AM': '上午 · 8:00',
+        '🪷 Six Banyan Trees Temple (六榕寺)': '🪷 六榕寺',
+        'One of Guangzhou\'s oldest Buddhist temples (537 AD). The beautiful Flower Pagoda is a must-see. A peaceful way to spend ~45 minutes on your final morning.': '广州最古老的佛教寺庙之一（始建于537年）。美丽的花塔不容错过。这是最后一天早晨宁静的45分钟好去处。',
+        '📸 Ancient Pagoda': '📸 千年古塔',
+        '💰 Free (donations welcome)': '💰 免费（欢迎捐款）',
+        'Mid-Morning · 9:00 AM': '上午 · 9:00',
+        '🍪 Grab Egg Tarts & Almond Cookies (蛋挞 / 杏仁饼)': '🍪 购买蛋挞与杏仁饼',
+        'Swing by a bakery near the temple — <strong>Pan Xi Restaurant area</strong> has great egg tart shops. Also pick up <em>杏仁饼 almond cookies</em> and <em>鸡仔饼</em> to bring home. Great budget souvenirs!': '顺路到寺庙附近的饼店——<strong>泮溪酒家一带</strong>有很棒的蛋挞店。再买些<em>杏仁饼</em>和<em>鸡仔饼</em>带回家。超实惠的手信！',
+        '🍪 Souvenir Snacks': '🍪 伴手礼零食',
+        '💰 ~¥15–30': '💰 约 ¥15–30',
+        'Late Morning · 10:15 AM': '上午 · 10:15',
+        '🚇 Head to Baiyun International Airport (CAN)': '🚇 前往广州白云国际机场',
+        'Take Metro Line 3 from downtown directly to the airport (~50 minutes, ~¥8). Flight <strong>CZ8301 departs at 12:40 PM</strong> — arriving by 10:45–11:00 AM gives you plenty of time for check-in and immigration.': '从市区乘坐地铁3号线直达机场（约50分钟，~¥8）。航班<strong>CZ8301于12:40起飞</strong>——10:45–11:00抵达机场，有充足时间办理值机和出境手续。',
+        '🚇 Metro ~¥8 · ~50 min': '🚇 地铁 ~¥8 · 约50分钟',
+        '✈ CZ8301 12:40 → 17:00': '✈ 航班 CZ8301 12:40 → 17:00',
+        'Late Morning · 10:45 AM': '上午 · 10:45',
+        '✈ Arrive at CAN Airport — Check-in & Immigration': '✈ 抵达机场 · 值机与出境',
+        'Clear immigration, browse duty-free for any last treats, then head to your gate. You made it! <strong>再见广州 · 再见广州 — see you next time!</strong>': '办理出境手续，逛逛免税店带点最后的小礼品，然后前往登机口。你做到了！<strong>再见广州 · 下次见！</strong>',
+        'Passport ready!': '备好护照！',
+        '✈ Board by ~12:10 PM': '✈ 约12:10登机',
+        '💡 Day 5 Tip — Departure Day': '💡 第五天贴士 · 返程日',
+        'With a <strong>12:40 PM departure</strong>, your morning is short but sweet! Keep it simple: temple + snacks + airport. Grab a quick congee or rice noodle roll (肠粉) near your hotel before leaving if hungry. <strong>Happy travels! 祝你旅途愉快!</strong> 🌟': '由于<strong>12:40起飞</strong>，你的早晨短暂而美好！保持简单：寺庙 + 小吃 + 机场。如果饿了，出发前在酒店附近来碗粥或肠粉。<strong>祝旅途愉快！</strong> 🌟',
+
+        // MAP UI
+        'Day 1 · Arrival & Old Guangzhou': '第一天 · 抵达与老广州',
+        '🚏 Today\'s Stops in Order:': '🚏 今日站点顺序：',
+        '🗺 Navigate to Stop 1 in Amap (高德地图)': '🗺 在高德地图导航到第1站',
+        '📍 Show Stop 1 on Amap': '📍 在高德地图查看第1站',
+        '* The route line shows the flow of your day. For real-time navigation, tap <strong>Amap (高德地图)</strong> — it works well in China with live traffic and metro routes. Routes, prices, and opening hours can change, so always double-check before you go.': '* 路线线表示您一天的行程顺序。如需实时导航，请点击<strong>高德地图</strong>——在中国可用实时路况和地铁路线。路线、价格和营业时间可能变化，出发前请再次确认。',
+
+        // FOOD
+        '🍜 Guangzhou Food Guide': '🍜 广州美食指南',
+        'Guangzhou is the <strong>culinary capital of China</strong>. Here are the must-try dishes during your visit.': '广州是<strong>中国的美食之都</strong>。以下是您此行必尝的佳肴。',
+        '💡 Budget Tip:': '💡 省钱贴士：',
+        'Eat at <strong>local canteens (食堂)</strong> for ¥15–25 per meal, or grab street snacks for ¥10–20. Skip tourist restaurants — follow the locals to find the best AND cheapest food!': '在<strong>本地食堂</strong>用餐每餐仅需¥15–25，或花¥10–20吃街头小吃。避开游客餐厅——跟着本地人就能找到最好又最便宜的美食！',
+        'Dim Sum': '早茶点心',
+        'The heart of Cantonese breakfast culture. Order from carts or menus at teahouses — har gow, siu mai, char siu bao, cheung fun, and more.': '粤式早餐文化的核心。在茶楼用手推车或菜单点单——虾饺、烧卖、叉烧包、肠粉等等。',
+        '🏆 Best at: Tao Tao Ju, Panxi, Dim Dim Sum': '🏆 推荐：陶陶居、泮溪、点点心思',
+        'Roast Goose & BBQ Meats': '烧鹅与烧味',
+        'Cantonese roast meats are legendary. Crispy-skinned roast goose, char siu (BBQ pork), and roast duck — all carved to order over rice.': '粤式烧味享誉天下。皮脆的烧鹅、叉烧和烧鸭——现点现切，配饭一流。',
+        '🏆 Best at: Yat Lok, Lou Heung': '🏆 推荐：一乐烧鹅、佬香',
+        'Claypot Rice': '煲仔饭',
+        'Rice cooked in a clay pot with Chinese sausage, chicken, or minced pork. The crispy rice crust at the bottom is the best part!': '用砂锅将米饭与腊肠、鸡肉或肉碎一同烹制。锅底焦脆的饭焦是精华所在！',
+        '🏆 Best at: Jiaji Claypot Rice': '🏆 推荐：佳记煲仔饭',
+        'Cantonese Soup': '老火汤',
+        'Slow-cooked for hours with herbs, meat, and vegetables. Every restaurant has its daily soup — it\'s a Cantonese health ritual!': '用药材、肉类和蔬菜慢火煲数小时。每家餐厅都有当日例汤——这是粤式养生之道！',
+        '🏆 Best at: Any local Cantonese restaurant': '🏆 推荐：任何本地粤菜餐厅',
+        'Double-Skin Milk Pudding': '双皮奶',
+        'A silky, warm or cold milk pudding with a delicate skin on top. Sweet, creamy, and absolutely addictive. A Foshan specialty!': '口感丝滑、可热可冷的牛奶布丁，表面有一层细嫩的奶皮。香甜浓郁，让人欲罢不能。佛山名产！',
+        '🏆 Best at: Renxin, Nanshun Shuangpi Nai': '🏆 推荐：仁信老铺、南顺双皮奶',
+        'Steamed Fish': '清蒸鱼',
+        'Fresh whole fish steamed with ginger, scallions, and soy sauce. Simple, pure, and the hallmark of Cantonese cooking philosophy.': '新鲜整鱼配姜葱酱油清蒸。简单纯粹，体现了粤菜烹饪哲学的精髓。',
+        '🏆 Best at: Any seafood restaurant in Liwan': '🏆 推荐：荔湾任何海鲜餐厅',
+
+        // TIPS
+        '📋 Practical Tips': '📋 实用贴士',
+        'Everything you need to know before arriving in Guangzhou.': '抵达广州前需要知道的一切。',
+        '💳 Money & Payment': '💳 货币与支付',
+        'China is almost entirely cashless — <strong>WeChat Pay</strong> and <strong>Alipay</strong> dominate': '中国几乎完全无现金——<strong>微信支付</strong>和<strong>支付宝</strong>占据主导',
+        'Foreign visitors can now link international credit cards to WeChat/Alipay': '外国游客现在可以将国际信用卡绑定到微信/支付宝',
+        'Keep some cash (¥200-500) for small vendors and emergencies': '备一些现金（¥200-500）用于小商贩和应急',
+        'ATMs at airports and banks (ICBC, Bank of China) accept foreign cards': '机场和银行（工商银行、中国银行）的ATM支持外国卡',
+        'Exchange rates: ~¥7.2 = $1 USD (check before travel)': '汇率：约¥7.2 = $1美元（出行前请核实）',
+        '🚇 Transportation (Budget Mode)': '🚇 交通（省钱模式）',
+        '<strong>Metro only</strong> — clean, fast, and cheap (¥2-8 per ride). Avoid taxis/DiDi to save money!': '<strong>只坐地铁</strong>——干净、快捷、便宜（每程¥2-8）。避免打车/滴滴以省钱！',
+        'Download <strong>Alipay</strong> for QR code metro entry (no physical card needed!)': '下载<strong>支付宝</strong>使用乘车码进站（无需实体卡！）',
+        'Use <strong>Amap (高德地图)</strong> for best metro route planning': '使用<strong>高德地图</strong>规划最佳地铁路线',
+        'Airport Express to city center: ~30 min, ¥25 (cheapest option to airport)': '机场快线到市中心：约30分钟，¥25（去机场最省钱的方式）',
+        'Walk whenever possible — Guangzhou is very walkable, especially in old town areas!': '尽可能步行——广州非常适合步行，尤其在老城区！',
+        '📱 Apps to Download': '📱 需下载的应用',
+        '<strong>WeChat</strong> — messaging, payments, mini-programs (essential!)': '<strong>微信</strong>——通讯、支付、小程序（必备！）',
+        '<strong>Alipay</strong> — payments, metro QR, food ordering': '<strong>支付宝</strong>——支付、乘车码、点餐',
+        '<strong>DiDi</strong> — ride-hailing': '<strong>滴滴</strong>——网约车',
+        '<strong>Trip.com</strong> — English booking for hotels & attractions': '<strong>Trip.com</strong>——酒店与景点英文预订',
+        '<strong>Google Translate</strong> — camera translation for menus': '<strong>谷歌翻译</strong>——菜单拍照翻译',
+        '<strong>Amap (高德地图)</strong> — best navigation for China': '<strong>高德地图</strong>——中国最佳导航',
+        '🌡 November Weather': '🌡 十一月天气',
+        '<strong>Temperature:</strong> 18°C – 26°C (64°F – 79°F)': '<strong>气温：</strong>18°C – 26°C（64°F – 79°F）',
+        '<strong>Humidity:</strong> Moderate, much lower than summer': '<strong>湿度：</strong>适中，远低于夏季',
+        '<strong>Rain:</strong> Low chance — pack a light rain jacket just in case': '<strong>降雨：</strong>概率低——备一件轻便雨衣以防万一',
+        '<strong>Clothing:</strong> Light layers — t-shirts, light jacket, comfortable walking shoes': '<strong>着装：</strong>轻便多层——T恤、薄外套、舒适的步行鞋',
+        'November is one of the <strong>best months to visit!</strong>': '十一月是<strong>最佳到访月份之一！</strong>',
+        '🏨 Where to Stay (Budget-Friendly)': '🏨 住宿推荐（经济实惠）',
+        '<strong>Beijing Road area:</strong> Central, walkable, tons of cheap eats nearby': '<strong>北京路一带：</strong>市中心、步行方便、附近平价美食众多',
+        '<strong>Liwan District:</strong> Traditional, authentic, most affordable hotels': '<strong>荔湾区：</strong>传统、地道、酒店最实惠',
+        'Budget guesthouses & hostels: <strong>¥80–150/night</strong> (private room available!)': '经济型民宿与青旅：<strong>¥80–150/晚</strong>（可住单间！）',
+        'Book on <strong>Trip.com, Booking.com, or Hostelworld</strong> for deals': '在<strong>Trip.com、Booking.com或Hostelworld</strong>预订享优惠',
+        'Tip: staying near a metro station saves transport costs too!': '提示：住在地铁站附近还能省交通费！',
+        '🛂 Visa & Entry': '🛂 签证与入境',
+        'Many nationalities qualify for the <strong>144-hour visa-free transit</strong> policy': '许多国家护照可享受<strong>144小时过境免签</strong>政策',
+        'Check if your country qualifies (63 countries listed)': '查询您的国家是否符合条件（共63国）',
+        'Transit must be to a third country (not round-trip to origin)': '过境须前往第三国（不能往返原出发地）',
+        'Passport must be valid for 6+ months': '护照有效期须在6个月以上',
+        'Consider the standard tourist visa (L visa) for 5+ day stays': '若停留超过5天，请考虑办理标准旅游签证（L签证）',
+
+        // PACKING
+        '🎒 Packing List': '🎒 行李清单',
+        'Click items to check them off! Tailored for Guangzhou in November.': '点击条目即可打勾！专为广州十一月定制。',
+        '👕 Clothing': '👕 衣物',
+        'T-shirts / light tops (5-6)': 'T恤 / 轻薄上衣（5-6件）',
+        'Light jacket or cardigan': '薄外套或开衫',
+        'Long pants / jeans (2-3)': '长裤 / 牛仔裤（2-3条）',
+        'Comfortable walking shoes': '舒适的步行鞋',
+        'Sandals / flip-flops': '凉鞋 / 人字拖',
+        'Light rain jacket': '轻便雨衣',
+        'Sleepwear': '睡衣',
+        'Underwear & socks (5-6 sets)': '内衣与袜子（5-6套）',
+        '📱 Tech & Gadgets': '📱 电子设备',
+        'Phone + charger': '手机 + 充电器',
+        'China power adapter (Type A/I)': '中国电源转换插头（A/I型）',
+        'Power bank (20,000mAh+)': '充电宝（20000mAh以上）',
+        'Camera (optional)': '相机（可选）',
+        'Portable WiFi / eSIM card': '随身WiFi / eSIM卡',
+        'Earbuds / headphones': '耳机',
+        '📄 Documents': '📄 证件',
+        'Passport (valid 6+ months)': '护照（有效期6个月以上）',
+        'Visa / transit approval': '签证 / 过境许可',
+        'Flight tickets (digital + print)': '机票（电子+纸质）',
+        'Hotel confirmation': '酒店确认单',
+        'Travel insurance docs': '旅行保险文件',
+        'Emergency contact card': '紧急联系卡',
+        '🧴 Essentials': '🧴 日常用品',
+        'Sunscreen (SPF 50+)': '防晒霜（SPF 50+）',
+        'Sunglasses': '太阳镜',
+        'Personal medications': '个人药品',
+        'Hand sanitizer': '免洗洗手液',
+        'Tissues / wet wipes': '纸巾 / 湿巾',
+        'Reusable water bottle': '可重复使用水瓶',
+        'Small daypack / crossbody bag': '小背包 / 斜挎包',
+
+        // BUDGET
+        '💰 Budget Breakdown — ¥2,000': '💰 预算明细 — ¥2,000',
+        'Smart budget plan for 5 days / 4 nights in Guangzhou (per person, excluding flights).': '广州5天4夜的精明预算方案（每人，不含机票）。',
+        'Category': '类别',
+        'Details': '明细',
+        'Est. Cost (¥)': '预计费用（¥）',
+        'Est. Cost ($)': '预计费用（$）',
+        '🏨 Accommodation': '🏨 住宿',
+        '4 nights × ¥120 (budget guesthouse/hostel)': '4晚 × ¥120（经济民宿/青旅）',
+        '🍜 Food & Drinks': '🍜 餐饮',
+        '5 days × ¥100 (street food & local canteens)': '5天 × ¥100（街头小吃与本地食堂）',
+        '🚇 Transportation': '🚇 交通',
+        'Metro only (no taxis)': '仅地铁（不打车）',
+        '🎟 Attractions': '🎟 景点门票',
+        'Many free! Canton Tower ¥150, Cruise ¥80, others free': '多数免费！广州塔¥150、游船¥80，其余免费',
+        '📱 SIM / WiFi': '📱 电话卡 / WiFi',
+        'Prepaid data SIM (5 days unlimited)': '预付数据卡（5天不限量）',
+        '🛍 Shopping & Souvenirs': '🛍 购物与手信',
+        'Small gifts, snacks, tea samples': '小礼物、零食、茶叶样品',
+        '🔄 Buffer / Extras': '🔄 备用金 / 额外',
+        'Unexpected costs, extra snacks, desserts': '意外开销、额外零食、甜品',
+        '<strong>TOTAL (per person)</strong>': '<strong>总计（每人）</strong>',
+        '* Does not include flights. Budget-friendly tips: eat at local canteens (食堂), use metro only, visit free attractions. Many of Guangzhou\'s best experiences — parks, temples, street walks, and river views — are completely free! Exchange rate used: ¥7.2 = $1 USD.': '* 不含机票。省钱贴士：在本地食堂（食堂）用餐、只坐地铁、参观免费景点。广州许多最佳体验——公园、寺庙、街头漫步和江景——完全免费！汇率按：¥7.2 = $1美元。',
+
+        // PHRASES
+        '🗣 Essential Phrases': '🗣 常用短语',
+        'A few Mandarin & Cantonese phrases to make your trip smoother.': '几句普通话与粤语短语，让您的旅程更顺畅。',
+        'Hello': '你好',
+        'Thank you': '谢谢',
+        'How much?': '多少钱？',
+        'Where is...?': '在哪里？',
+        'I want this one': '我要这个',
+        'Delicious!': '好吃！',
+        'Excuse me / Sorry': '不好意思',
+        'No spicy, please': '不要辣',
+        'Water, please': '请给我水',
+        'The bill, please': '买单',
+        'Metro station?': '地铁站在哪？',
+        'Beautiful!': '好漂亮！',
+
+        // FOOTER
+        'Have an Amazing Trip! 🌟': '祝你旅途愉快！🌟',
+        'Guangzhou will steal your heart with its food, culture, and warmth. Safe travels and happy eating!': '广州会用美食、文化和热情俘获你的心。一路平安，吃好喝好！',
+        'Made with ❤ for your Guangzhou adventure · November 2026': '为你的广州之旅精心制作 · 2026年11月'
+    };
+
+    // Normalize a dictionary key by stripping any HTML tags, so keys that were
+    // authored with <strong>/<em> match an element's textContent (tags removed).
+    function normKey(s) { return (s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
+    const DICT_NORM = (function () {
+        const m = {};
+        for (const k in LANG_DICT) m[normKey(k)] = LANG_DICT[k];
+        return m;
+    })();
+
+    const gzLang = {
+        current: localStorage.getItem('gz_lang') || 'en',
+        originals: new WeakMap(),
+        modified: new Set(),
+        capture(root) {
+            root.querySelectorAll('*').forEach(el => {
+                if (!this.originals.has(el)) this.originals.set(el, el.innerHTML);
+            });
+        },
+        apply(lang) {
+            // Restore previously translated elements to their original English
+            this.modified.forEach(el => {
+                const orig = this.originals.get(el);
+                if (orig !== undefined) el.innerHTML = orig;
+            });
+            this.modified.clear();
+
+            this.current = lang;
+            try { localStorage.setItem('gz_lang', lang); } catch (e) {}
+
+            if (lang === 'cn') {
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
+                const skip = new WeakSet();
+                let n;
+                while ((n = walker.nextNode())) {
+                    if (skip.has(n)) continue;
+                    const tag = n.tagName;
+                    if (tag === 'SCRIPT' || tag === 'STYLE') continue;
+                    const txt = normText(n.textContent);
+                    if (!txt) continue;
+                    const zh = DICT_NORM[normKey(txt)];
+                    if (zh) {
+                        n.innerHTML = zh;
+                        this.modified.add(n);
+                        skip.add(n);
+                    }
+                }
+            }
+
+            document.querySelectorAll('#langToggle .opt').forEach(o =>
+                o.classList.toggle('active', o.dataset.lang === lang));
+
+            // Refresh map labels in the current language (only if the map exists)
+            activeLang = lang;
+            if (routeMap && typeof drawRoute === 'function' && typeof currentRouteKey !== 'undefined' && ROUTES[currentRouteKey]) {
+                drawRoute(currentRouteKey);
+            }
+        }
+    };
+
+    gzLang.capture(document.body);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        gzLang.apply(gzLang.current);
+        document.querySelectorAll('#langToggle .opt').forEach(o => {
+            o.addEventListener('click', () => gzLang.apply(o.dataset.lang));
+        });
+    });
 
     // Initialize map once DOM is ready
     if (window.L) {
