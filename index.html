@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guangzhou Travel Itinerary — 5 Days & 4 Nights</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <style>
+        /* ===== CSS RESET & VARIABLES ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-bg: #faf9f6;
+            --color-surface: #ffffff;
+            --color-text: #2c2c2c;
+            --color-text-light: #6b6b6b;
+            --color-accent: #c0392b;
+            --color-accent-light: #e74c3c;
+            --color-accent-bg: #fdf0ef;
+            --color-gold: #d4a843;
+            --color-border: #e8e6e1;
+            --color-day1: #c0392b;
+            --color-day2: #e67e22;
+            --color-day3: #27ae60;
+            --color-day4: #2980b9;
+            --color-day5: #8e44ad;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --radius: 16px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 48px rgba(0,0,0,0.1);
+            --max-w: 1100px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(192,57,43,0.88) 0%, rgba(44,62,80,0.92) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900"><rect fill="%23c0392b" width="1440" height="900"/><circle cx="200" cy="400" r="300" fill="%23e74c3c" opacity="0.3"/><circle cx="1200" cy="300" r="400" fill="%232c3e50" opacity="0.2"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(212,168,67,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(192,57,43,0.2) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: 50px;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(4px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            color: #fff;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h1 .cn {
+            display: block;
+            font-size: 0.45em;
+            font-family: var(--font-body);
+            font-weight: 300;
+            opacity: 0.75;
+            margin-top: 0.5rem;
+            letter-spacing: 4px;
+        }
+
+        .hero-subtitle {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.25rem;
+            font-weight: 300;
+            margin-top: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-subtitle strong {
+            color: var(--color-gold);
+            font-weight: 600;
+        }
+
+        .hero-details {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-detail {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-detail .icon {
+            font-size: 1.3rem;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===== NAV ===== */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0;
+        }
+
+        .nav-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .nav-inner::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            flex-shrink: 0;
+            padding: 1rem 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 5rem 1.5rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--color-text);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: var(--color-accent);
+            border-radius: 3px;
+            margin: 1.5rem auto;
+        }
+
+        /* ===== OVERVIEW CARDS ===== */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .overview-card {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+            transition: var(--transition);
+        }
+
+        .overview-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .overview-card .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .overview-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-card p {
+            color: var(--color-text-light);
+            font-size: 0.92rem;
+        }
+
+        /* ===== ITINERARY ===== */
+        .day-card {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .day-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .day-header {
+            padding: 2rem 2.5rem;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-header::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .day-header .day-num {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+
+        .day-header h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin-top: 0.3rem;
+        }
+
+        .day-header .day-theme {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin-top: 0.4rem;
+            font-weight: 300;
+        }
+
+        .day-body {
+            padding: 2.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: var(--color-border);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item:last-child { margin-bottom: 0; }
+
+        .timeline-dot {
+            position: absolute;
+            left: -2.5rem;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px currentColor;
+            background: currentColor;
+        }
+
+        .timeline-time {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-desc {
+            color: var(--color-text-light);
+            font-size: 0.93rem;
+            line-height: 1.7;
+        }
+
+        .timeline-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--color-accent-bg);
+            color: var(--color-accent);
+        }
+
+        .tag.food { background: #fef5e7; color: #e67e22; }
+        .tag.tip { background: #eaf7f0; color: #27ae60; }
+        .tag.transport { background: #ebf5fb; color: #2980b9; }
+        .tag.photo { background: #f4ecf7; color: #8e44ad; }
+
+        .day-highlight {
+            background: linear-gradient(135deg, #fdf6ec, #fef9f0);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--color-gold);
+        }
+
+        .day-highlight .hl-title {
+            font-weight: 600;
+            color: var(--color-gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== FOOD GUIDE ===== */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .food-card {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+            transition: var(--transition);
+        }
+
+        .food-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .food-emoji {
+            font-size: 4rem;
+            padding: 2rem 2rem 1rem;
+        }
+
+        .food-info {
+            padding: 0 2rem 2rem;
+        }
+
+        .food-info h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .food-info .cn-name {
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .food-info p {
+            color: var(--color-text-light);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .food-info .must-try {
+            margin-top: 0.8rem;
+            padding: 0.6rem 1rem;
+            background: var(--color-accent-bg);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--color-accent);
+            font-weight: 500;
+        }
+
+        /* ===== PRACTICAL TIPS ===== */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tip-category {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+        }
+
+        .tip-category h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .tip-list {
+            list-style: none;
+        }
+
+        .tip-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.92rem;
+            color: var(--color-text-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .tip-list li:last-child { border-bottom: none; }
+
+        .tip-list li::before {
+            content: '→';
+            color: var(--color-accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        /* ===== PACKING LIST ===== */
+        .packing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .packing-category {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+        }
+
+        .packing-category h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 0.45rem 0;
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .checklist li::before {
+            content: '';
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--color-border);
+            border-radius: 4px;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .checklist li.checked::before {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+
+        .checklist li.checked {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        /* ===== BUDGET ===== */
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+        }
+
+        .budget-table thead {
+            background: var(--color-accent);
+            color: #fff;
+        }
+
+        .budget-table th {
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .budget-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.92rem;
+        }
+
+        .budget-table tbody tr:last-child td { border-bottom: none; }
+
+        .budget-table tbody tr:hover {
+            background: var(--color-accent-bg);
+        }
+
+        .budget-table .total-row {
+            background: #fdf6ec;
+            font-weight: 600;
+        }
+
+        .budget-table .total-row td {
+            border-bottom: none;
+        }
+
+        /* ===== PHRASE BOOK ===== */
+        .phrase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .phrase-card {
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+        }
+
+        .phrase-en {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            margin-bottom: 0.3rem;
+        }
+
+        .phrase-cn {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--color-accent);
+        }
+
+        .phrase-pinyin {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            font-style: italic;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #2c2c2c;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 4rem 1.5rem;
+        }
+
+        .footer h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .footer p {
+            max-width: 500px;
+            margin: 0 auto 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .footer .cn-text {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            color: var(--color-gold);
+        }
+
+        /* ===== ROUTE MAP ===== */
+        .map-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .map-tab {
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            border: 2px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text-light);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .map-tab:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .map-tab.active {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+            color: #fff;
+        }
+
+        .map-wrapper {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--color-border);
+            background: #e8e6e1;
+        }
+
+        #route-map {
+            width: 100%;
+            height: 520px;
+            z-index: 1;
+        }
+
+        .map-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+        }
+
+        .map-legend .legend-title {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .map-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .map-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            border: none;
+            background: var(--color-accent);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+        }
+
+        .map-action-btn:hover {
+            background: var(--color-accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(192,57,43,0.4);
+        }
+
+        .map-action-btn.secondary {
+            background: var(--color-surface);
+            color: var(--color-accent);
+            border: 2px solid var(--color-accent);
+            box-shadow: none;
+        }
+
+        .map-action-btn.secondary:hover {
+            background: var(--color-accent-bg);
+        }
+
+        #map-stop-list {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow);
+            font-size: 0.9rem;
+        }
+
+        .stop-list-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--color-text);
+        }
+
+        .stop-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            padding: 0.4rem 0;
+            color: var(--color-text-light);
+            border-bottom: 1px dashed var(--color-border);
+        }
+
+        .stop-row:last-child { border-bottom: none; }
+
+        .stop-num {
+            flex-shrink: 0;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--color-accent);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Custom numbered map markers */
+        .numbered-marker {
+            width: 26px;
+            height: 26px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            background: var(--color-accent);
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .numbered-marker span {
+            transform: rotate(45deg);
+        }
+
+        @media (max-width: 768px) {
+            #route-map { height: 380px; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .section { padding: 3rem 1rem; }
+            .day-header { padding: 1.5rem; }
+            .day-body { padding: 1.5rem; }
+            .hero-details { gap: 1.5rem; }
+            .budget-table { font-size: 0.85rem; }
+            .budget-table th, .budget-table td { padding: 0.8rem; }
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== NAV ACTIVE STATE ===== */
+        .nav-link.active {
+            color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+    <div class="hero-content">
+        <div class="hero-badge">✈ Travel Itinerary</div>
+        <h1>
+            Guangzhou
+            <span class="cn">广州 · 花城</span>
+        </h1>
+        <p class="hero-subtitle">
+            A <strong>5-day, 4-night</strong> journey through the <strong>Flower City</strong> —
+            where Cantonese cuisine, ancient temples, and modern marvels collide.
+        </p>
+        <div class="hero-details">
+            <div class="hero-detail"><span class="icon">📅</span> November 2026</div>
+            <div class="hero-detail"><span class="icon">✈</span> CZ8490 → CZ8301</div>
+            <div class="hero-detail"><span class="icon">🌡</span> 18–26°C · Pleasant</div>
+            <div class="hero-detail"><span class="icon">💰</span> ¥2,000 Budget</div>
+            <div class="hero-detail"><span class="icon">🗣</span> Cantonese / Mandarin</div>
+        </div>
+    </div>
+    <div class="scroll-hint">↓ Scroll to explore</div>
+</section>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#flights" class="nav-link">Flights</a>
+        <a href="#day1" class="nav-link">Day 1</a>
+        <a href="#day2" class="nav-link">Day 2</a>
+        <a href="#day3" class="nav-link">Day 3</a>
+        <a href="#day4" class="nav-link">Day 4</a>
+        <a href="#day5" class="nav-link">Day 5</a>
+        <a href="#maps" class="nav-link">🗺 Route Maps</a>
+        <a href="#food" class="nav-link">Food Guide</a>
+        <a href="#tips" class="nav-link">Tips</a>
+        <a href="#packing" class="nav-link">Packing</a>
+        <a href="#budget" class="nav-link">Budget</a>
+        <a href="#phrases" class="nav-link">Phrases</a>
+    </div>
+</nav>
+
+<!-- ===== OVERVIEW ===== -->
+<section class="section" id="overview">
+    <div class="section-header fade-in">
+        <h2>Your Guangzhou Adventure</h2>
+        <div class="divider"></div>
+        <p>From dim sum mornings to Pearl River sunsets — here's what awaits you in one of China's most vibrant cities.</p>
+    </div>
+
+    <div class="overview-grid">
+        <div class="overview-card fade-in">
+            <div class="card-icon">🏙</div>
+            <h3>Modern Marvels</h3>
+            <p>Explore the futuristic Canton Tower, Zhujiang New Town's skyline, and Guangzhou Circle — architecture that will blow your mind.</p>
+        </div>
+        <div class="overview-card fade-in">
+            <div class="card-icon">🏯</div>
+            <h3>Ancient Charm</h3>
+            <p>Wander through Chen Clan Ancestral Hall, Yuexiu Park's Five Rams, and the historic Shamian Island with its colonial-era buildings.</p>
+        </div>
+        <div class="overview-card fade-in">
+            <div class="card-icon">🥟</div>
+            <h3>Food Paradise</h3>
+            <p>Guangzhou is the birthplace of dim sum and Cantonese cuisine. Every meal is a celebration — from street snacks to fine dining.</p>
+        </div>
+        <div class="overview-card fade-in">
+            <div class="card-icon">🌿</div>
+            <h3>November Weather</h3>
+            <p>Pleasant temps of 18–26°C, low humidity, and minimal rain — the best time to visit Guangzhou. Light layers are all you need!</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FLIGHT RECORD ===== -->
+<section class="section" id="flights" style="padding-top: 0;">
+    <div class="day-card fade-in">
+        <div style="padding: 2rem 2.5rem;">
+            <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1.5rem;">
+                <span style="font-size:2rem;">✈️</span>
+                <h3 style="font-family:var(--font-display); font-size:1.5rem;">Your Flight Record</h3>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem;">
+                <div style="background:var(--color-accent-bg); border-radius:12px; padding:1.5rem; border-left:4px solid var(--color-day1);">
+                    <div style="font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; color:var(--color-text-light); font-weight:600;">Outbound · To Guangzhou</div>
+                    <div style="font-family:var(--font-display); font-size:2rem; margin:0.5rem 0; color:var(--color-day1);">CZ8490</div>
+                    <div style="font-size:0.9rem; color:var(--color-text);">✈ China Southern Airlines · Landing at Baiyun Int'l (CAN)</div>
+                    <div style="font-size:0.85rem; color:var(--color-text-light); margin-top:0.5rem;">Day 1 morning arrival → Metro to hotel</div>
+                </div>
+                <div style="background:#f0f7fa; border-radius:12px; padding:1.5rem; border-left:4px solid var(--color-day5);">
+                    <div style="font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; color:var(--color-text-light); font-weight:600;">Return · From Guangzhou</div>
+                    <div style="font-family:var(--font-display); font-size:2rem; margin:0.5rem 0; color:var(--color-day5);">CZ8301</div>
+                    <div style="font-size:0.9rem; color:var(--color-text);">✈ China Southern Airlines · Departing from Baiyun Int'l (CAN)</div>
+                    <div style="font-size:0.85rem; color:var(--color-text-light); margin-top:0.5rem;">Day 5 afternoon departure → leave airport 2–3h early</div>
+                </div>
+            </div>
+            <div style="margin-top:1.2rem; font-size:0.85rem; color:var(--color-text-light);">
+                ⏰ <strong>Remember:</strong> Arrive at the airport <strong>2–3 hours</strong> before departure. Keep your passport, boarding pass, and hotel details handy.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DAY 1 ===== -->
+<section class="section" id="day1">
+    <div class="day-card fade-in">
+        <div class="day-header" style="background: linear-gradient(135deg, var(--color-day1), #962d22);">
+            <div class="day-num">Day 1</div>
+            <h3>Arrival & Old Guangzhou</h3>
+            <div class="day-theme">Settle in, explore the historic heart, and taste your first Cantonese feast</div>
+        </div>
+        <div class="day-body">
+            <div class="timeline">
+                <div class="timeline-item" style="color: var(--color-day1);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Morning · Arrival</div>
+                    <div class="timeline-title">✈ Flight CZ8490 → Guangzhou Baiyun International Airport (CAN)</div>
+                    <div class="timeline-desc">
+                        Land at Baiyun Airport. Take the Airport Express or Metro Line 3 to your hotel. Check in and freshen up.
+                        <strong>Stay suggestion:</strong> Book near Beijing Road or Zhujiang New Town for easy metro access.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag transport">🚇 Metro ~¥8</span>
+                        <span class="tag">✈ CZ8490 Arrival</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day1);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Lunch · 12:00 PM</div>
+                    <div class="timeline-title">🥟 Dim Sum at Tao Tao Ju (陶陶居)</div>
+                    <div class="timeline-desc">
+                        Start your trip the Cantonese way — with yum cha! This legendary teahouse has been serving dim sum since 1880.
+                        Must-order: <em>har gow</em> (shrimp dumplings), <em>char siu bao</em> (BBQ pork buns), and <em>cheung fun</em> (rice noodle rolls).
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">🍽 Cantonese Dim Sum</span>
+                        <span class="tag tip">💰 ~¥50-80/person</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day1);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Afternoon · 2:00 PM</div>
+                    <div class="timeline-title">🏛 Chen Clan Ancestral Hall (陈家祠)</div>
+                    <div class="timeline-desc">
+                        A masterpiece of Lingnan architecture! This Qing Dynasty clan hall features incredible wood, stone, and brick carvings.
+                        The complex now houses the Guangdong Folk Art Museum — allow 1.5–2 hours to explore.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Stunning architecture</span>
+                        <span class="tag tip">💰 ¥10 entry</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day1);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Late Afternoon · 4:30 PM</div>
+                    <div class="timeline-title">🛍 Beijing Road Pedestrian Street (北京路)</div>
+                    <div class="timeline-desc">
+                        Stroll down this 2,000-year-old shopping street! See the preserved ancient road layers under glass panels,
+                        browse shops, and grab street snacks along the way.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag">🛍 Shopping & History</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day1);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Evening · 7:00 PM</div>
+                    <div class="timeline-title">🌃 Shangxiajiu Pedestrian Street (上下九)</div>
+                    <div class="timeline-desc">
+                        Neon-lit Qilou (arcade buildings) line this bustling street — a perfect evening stroll. Sample local snacks:
+                        double-skin milk pudding, shrimp rice rolls, and stinky tofu. End with a bowl of Guangzhou fish noodles.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">🍢 Street Food Heaven</span>
+                        <span class="tag photo">📸 Qilou Architecture</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-highlight">
+                <div class="hl-title">💡 Day 1 Tip — Budget Saver</div>
+                <p style="font-size:0.93rem;">Set up <strong>Alipay metro QR</strong> for tap-and-go — no card deposit needed! Or get a <strong>Guangzhou Tong Card (羊城通)</strong> at any metro station. Also: <strong>many of today's spots are FREE</strong> — Beijing Road, Shangxiajiu, and the street food scene cost very little!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DAY 2 ===== -->
+<section class="section" id="day2">
+    <div class="day-card fade-in">
+        <div class="day-header" style="background: linear-gradient(135deg, var(--color-day2), #c0621a);">
+            <div class="day-num">Day 2</div>
+            <h3>Yuexiu, Baiyun & Skyline Views</h3>
+            <div class="day-theme">Park exploration, iconic landmarks, and Guangzhou's modern skyline at sunset</div>
+        </div>
+        <div class="day-body">
+            <div class="timeline">
+                <div class="timeline-item" style="color: var(--color-day2);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Morning · 8:30 AM</div>
+                    <div class="timeline-title">🌳 Yuexiu Park & Five Rams Sculpture (越秀公园)</div>
+                    <div class="timeline-desc">
+                        Guangzhou's largest urban park and home to the iconic Five Rams statue — the city's symbol!
+                        Also visit the Zhenhai Tower (Five-Story Tower) which houses a history museum. A peaceful morning walk among banyan trees.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Five Rams Icon</span>
+                        <span class="tag tip">💰 Free</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day2);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Mid-Morning · 10:30 AM</div>
+                    <div class="timeline-title">🏛 Sun Yat-sen Memorial Hall (中山纪念堂)</div>
+                    <div class="timeline-desc">
+                        A stunning octagonal hall surrounded by gardens. The architecture blends traditional Chinese and Western styles.
+                        It's just a short walk from Yuexiu Park.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag tip">💰 ¥10 entry</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day2);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Lunch · 12:30 PM</div>
+                    <div class="timeline-title">🍜 Wonton Noodles at Ngau Kee Beef (牛记)</div>
+                    <div class="timeline-desc">
+                        Try classic Guangzhou wonton noodles (云吞面) — silky shrimp wontons in rich broth with springy egg noodles.
+                        A staple of Cantonese comfort food. Pair with braised beef brisket!
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">🍜 Cantonese Noodles</span>
+                        <span class="tag tip">💰 ~¥30-50</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day2);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Afternoon · 2:00 PM</div>
+                    <div class="timeline-title">🏙 Zhujiang New Town (珠江新城)</div>
+                    <div class="timeline-desc">
+                        Guangzhou's modern CBD! Walk along the Zhujiang River, admire the IFC Tower and Guangzhou Opera House (Zaha Hadid design).
+                        Visit the Guangdong Museum (free, just need ID) for a deep dive into Lingnan culture.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Modern Skyline</span>
+                        <span class="tag">🎭 Opera House</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day2);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Evening · 6:30 PM</div>
+                    <div class="timeline-title">🗼 Canton Tower (广州塔) — The Pearl River Night View</div>
+                    <div class="timeline-desc">
+                        The crown jewel of any Guangzhou trip! Head up to the observation deck (488m!) for breathtaking 360° views.
+                        Book tickets online in advance to skip the queue. Stay for the stunning night views — the tower itself lights up in rainbow colors!
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Must-Visit!</span>
+                        <span class="tag tip">💰 ¥150 or FREE ground views</span>
+                        <span class="tag transport">🚇 Metro to Canton Tower Station</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-highlight">
+                <div class="hl-title">💡 Day 2 Tip — Save Money!</div>
+                <p style="font-size:0.93rem;">Canton Tower is pricey (¥150). <strong>Budget option:</strong> Skip the observation deck and enjoy the stunning views from the ground for free — the tower lights up beautifully at night! Or visit the <strong>free outdoor observation area</strong> at Zhujiang New Town instead. If you do go up, buy tickets on <strong>Trip.com</strong> at least 1 day in advance for discounts.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DAY 3 ===== -->
+<section class="section" id="day3">
+    <div class="day-card fade-in">
+        <div class="day-header" style="background: linear-gradient(135deg, var(--color-day3), #1e8449);">
+            <div class="day-num">Day 3</div>
+            <h3>Shamian Island & Cultural Gems</h3>
+            <div class="day-theme">Colonial charm, river breezes, and hidden cultural treasures</div>
+        </div>
+        <div class="day-body">
+            <div class="timeline">
+                <div class="timeline-item" style="color: var(--color-day3);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Morning · 9:00 AM</div>
+                    <div class="timeline-title">🏝 Shamian Island (沙面岛)</div>
+                    <div class="timeline-desc">
+                        A magical pedestrian island that feels like a European village. Lined with 19th-century colonial buildings,
+                        banyan-shaded walkways, and charming cafes. Perfect for a slow morning stroll and photography.
+                        Don't miss the former British and French Concession buildings!
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Photography Paradise</span>
+                        <span class="tag tip">💰 Free</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day3);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Lunch · 12:00 PM</div>
+                    <div class="timeline-title">🐟 Seafood Lunch at Liwan Lake Park Area</div>
+                    <div class="timeline-desc">
+                        Head to the Liwan district for authentic Cantonese seafood. Try steamed fish with ginger and scallion,
+                        salt-and-pepper prawns, and stir-fried water spinach with garlic. This is where locals eat!
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">🐟 Cantonese Seafood</span>
+                        <span class="tag tip">💰 ~¥60-100/person</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day3);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Afternoon · 2:00 PM</div>
+                    <div class="timeline-title">🌺 Liwan Lake Park (荔湾湖公园)</div>
+                    <div class="timeline-desc">
+                        A serene traditional Chinese garden park with lotus ponds, willow trees, and covered bridges.
+                        If you're lucky, you'll catch local musicians practicing Cantonese opera in the pavilions!
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag">🌿 Traditional Garden</span>
+                        <span class="tag tip">💰 Free</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day3);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Late Afternoon · 4:00 PM</div>
+                    <div class="timeline-title">🎨 Xiguan Folk Art & Mansion Tour</div>
+                    <div class="timeline-desc">
+                        Explore the historic Xiguan (西关) neighborhood — the heart of old Guangzhou. Visit the <strong>Lingnan Impression</strong>
+                        shops, watch traditional candy-pulling art, and see exquisite Xiguan-style tiled houses.
+                        If time allows, visit the <strong>Shijing Xuantai Museum</strong> hidden underground.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag">🎭 Cultural Experience</span>
+                        <span class="tag photo">📸 Tiled Houses</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day3);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Evening · 7:00 PM</div>
+                    <div class="timeline-title">🚢 Pearl River Night Cruise (珠江夜游)</div>
+                    <div class="timeline-desc">
+                        The ultimate Guangzhou evening! Board a cruise from Tianzi Wharf and glide past the illuminated Canton Tower,
+                        Liede Bridge, and the stunning CBD skyline reflected in the river. Take a seat on the open deck and soak it all in.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Unmissable Views</span>
+                        <span class="tag tip">💰 ~¥60-80 (discounted)</span>
+                        <span class="tag transport">🚇 Metro to Tianzi Wharf Station</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-highlight">
+                <div class="hl-title">💡 Day 3 Tip — Save on Cruise!</div>
+                <p style="font-size:0.93rem;"><strong>Budget alternative:</strong> Skip the cruise and walk along the <strong>Zhujiang River Promenade</strong> for FREE — you'll still get stunning skyline views and can see the Canton Tower light up! If you do cruise, the evening cruise (7:00–9:00 PM) is best. Book via <strong>Trip.com</strong> for discounted tickets (~¥60-80).</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DAY 4 ===== -->
+<section class="section" id="day4">
+    <div class="day-card fade-in">
+        <div class="day-header" style="background: linear-gradient(135deg, var(--color-day4), #1a5276);">
+            <div class="day-num">Day 4</div>
+            <h3>Day Trip: Foshan or Baiyun Mountain</h3>
+            <div class="day-theme">Choose your adventure — martial arts heritage or mountain hiking</div>
+        </div>
+        <div class="day-body">
+            <div class="timeline">
+                <!-- OPTION A -->
+                <div class="timeline-item" style="color: var(--color-day4);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Option A · Full Day</div>
+                    <div class="timeline-title">🥋 Day Trip to Foshan (佛山) — Martial Arts Capital</div>
+                    <div class="timeline-desc">
+                        Just 30 minutes by metro! Visit the <strong>Foshan Ancestral Temple</strong> (祖庙), the <strong>Ip Man Museum</strong>,
+                        and <strong>Bruce Lee's birthplace</strong>. Watch a martial arts performance at the temple grounds.
+                        Stroll through <strong>Donghua Ancient Town</strong> (东华里) for beautiful Lingnan architecture.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag transport">🚇 Metro Line 1 to Foshan</span>
+                        <span class="tag photo">📸 Martial Arts Heritage</span>
+                        <span class="tag tip">💰 Temple ¥25, mostly free</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day4);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Option A · Lunch</div>
+                    <div class="timeline-title">🍳 Foshan's Famous Double-Skin Milk (双皮奶)</div>
+                    <div class="timeline-desc">
+                        Foshan is famous for its silky double-skin milk pudding — a silky, sweet custard dessert.
+                        Try it at <strong>Renxin Double-Skin Milk</strong> (仁信老铺). Also sample Foshan's special rice dumplings (裹蒸粽).
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">🍮 Famous Dessert</span>
+                    </div>
+                </div>
+
+                <!-- OPTION B -->
+                <div class="timeline-item" style="color: var(--color-day4);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Option B · Full Day</div>
+                    <div class="timeline-title">⛰ Baiyun Mountain (白云山)</div>
+                    <div class="timeline-desc">
+                        Guangzhou's beloved "back garden" — a lush mountain park right in the city. Take the cable car up,
+                        hike the scenic trails, and enjoy panoramic views of the entire city. Visit <strong>Mingchun Garden</strong> and the
+                        <strong>Star Lake</strong> along the way.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Panoramic Views</span>
+                        <span class="tag transport">🚇 Metro to Baiyun Mountain</span>
+                        <span class="tag tip">💰 ¥5 entry + ¥25 cable car</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day4);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Option B · Lunch</div>
+                    <div class="timeline-title">🍲 Mountain Picnic or Yunbing Restaurant</div>
+                    <div class="timeline-desc">
+                        Pack a light picnic or eat at one of the mountain's teahouse restaurants with city views.
+                        In the evening, head to <strong>Tianhe City</strong> (天河城) for shopping, dinner, and the vibrant nightlife scene.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">🍲 Mountain Dining</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day4);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Evening · 7:30 PM</div>
+                    <div class="timeline-title">🍜 Dinner at Zhujiang Beer Street (珠江琶醍)</div>
+                    <div class="timeline-desc">
+                        End the day at Guangzhou's riverside bar and dining strip. Craft beers, live music, and a stunning river view.
+                        Perfect for a relaxed evening after a full day of exploration.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">🍺 Riverside Dining</span>
+                        <span class="tag">🎵 Live Music</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-highlight">
+                <div class="hl-title">💡 Day 4 Tip — Budget Choice</div>
+                <p style="font-size:0.93rem;">Both options are <strong>metro-accessible (no taxis needed)</strong>. Baiyun Mountain is the cheaper choice (~¥30 entry + cable car), while Foshan is slightly more (¥25 temple + food). Skip the cable car and hike the mountain trails to save even more — the views are just as rewarding!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DAY 5 ===== -->
+<section class="section" id="day5">
+    <div class="day-card fade-in">
+        <div class="day-header" style="background: linear-gradient(135deg, var(--color-day5), #6c3483);">
+            <div class="day-num">Day 5</div>
+            <h3>Temple, Markets & Departure</h3>
+            <div class="day-theme">Final morning explorations, souvenir shopping, and a fond farewell</div>
+        </div>
+        <div class="day-body">
+            <div class="timeline">
+                <div class="timeline-item" style="color: var(--color-day5);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Morning · 8:00 AM</div>
+                    <div class="timeline-title">🪷 Six Banyan Trees Temple (六榕寺)</div>
+                    <div class="timeline-desc">
+                        One of Guangzhou's oldest Buddhist temples (dating to 537 AD). The beautiful flower pagoda is a must-see.
+                        A peaceful way to start your final day — take a moment to reflect on your trip.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag photo">📸 Ancient Pagoda</span>
+                        <span class="tag tip">💰 Free (donations welcome)</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day5);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Mid-Morning · 10:00 AM</div>
+                    <div class="timeline-title">☕ Morning Tea at Jianshe Liu Ma Lu (建设六马路)</div>
+                    <div class="timeline-desc">
+                        Guangzhou's "cafe street" with a European vibe. Enjoy a final cup of tea or coffee at a charming cafe,
+                        or do one last round of dim sum — this time at a quieter neighborhood teahouse.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">☕ Cafe Culture</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day5);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Late Morning · 11:30 AM</div>
+                    <div class="timeline-title">🛍 Souvenir Shopping at Wuxiang Market or Liwan Plaza</div>
+                    <div class="timeline-desc">
+                        Pick up last-minute souvenirs: Cantonese tea sets, dried seafood, herbal tea packs, chopsticks,
+                        and silk products. Bargain-friendly markets! Don't forget to grab some <em>egg tarts</em> and <em>almond cookies</em> for the road.
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag">🛍 Souvenirs</span>
+                        <span class="tag food">🍪 Snacks to Take Home</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day5);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Lunch · 1:00 PM</div>
+                    <div class="timeline-title">🍚 Final Cantonese Feast</div>
+                    <div class="timeline-desc">
+                        One last memorable meal! Try <strong>roasted goose rice</strong> (烧鹅饭) or a <strong>Cantonese claypot rice</strong> (煲仔饭)
+                        at a local restaurant. Savor every bite — Guangzhou food will be the thing you miss most!
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag food">🍚 Cantonese Farewell</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item" style="color: var(--color-day5);">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-time">Afternoon · 3:00 PM</div>
+                    <div class="timeline-title">✈ Flight CZ8301 — Head to Airport & Departure</div>
+                    <div class="timeline-desc">
+                        Take the Airport Express or Metro Line 3 back to Baiyun International Airport.
+                        Allow 2–3 hours before your flight for check-in and security.
+                        <strong>Happy travels! 祝你旅途愉快!</strong>
+                    </div>
+                    <div class="timeline-tags">
+                        <span class="tag transport">🚇 Metro Line 3 to Airport</span>
+                        <span class="tag tip">💰 ~¥8</span>
+                        <span class="tag">✈ CZ8301 Departure</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-highlight">
+                <div class="hl-title">💡 Day 5 Tip — Budget Saver</div>
+                <p style="font-size:0.93rem;">Most of today is <strong>completely free</strong> — the Six Banyan Trees Temple, cafe strolling, and the Flower Market all cost nothing! Take a last free walk through <strong>Flower Market (花城广场)</strong> near the CBD for a beautiful farewell photo before heading to the airport.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== ROUTE MAPS ===== -->
+<section class="section" id="maps" style="background: linear-gradient(180deg, var(--color-bg), #f0f7fa);">
+    <div class="section-header fade-in">
+        <h2>🗺 Interactive Route Maps</h2>
+        <div class="divider"></div>
+        <p>Follow each day's journey with numbered stops on the map — tap any stop to find it in <strong>Amap (高德地图)</strong>, China's best navigation app.</p>
+    </div>
+
+    <div class="map-tabs fade-in" id="map-tabs">
+        <button class="map-tab active" data-day="1">Day 1</button>
+        <button class="map-tab" data-day="2">Day 2</button>
+        <button class="map-tab" data-day="3">Day 3</button>
+        <button class="map-tab" data-day="4a">Day 4 · Foshan</button>
+        <button class="map-tab" data-day="4b">Day 4 · Mountain</button>
+        <button class="map-tab" data-day="5">Day 5</button>
+    </div>
+
+    <div class="map-wrapper fade-in">
+        <div id="route-map"></div>
+        <div class="map-legend">
+            <span class="legend-title" id="map-legend-title">Day 1 · Arrival & Old Guangzhou</span>
+            <span id="map-legend-count">5 stops</span>
+        </div>
+    </div>
+
+    <div class="map-actions fade-in">
+        <button class="map-action-btn" onclick="openRouteInAmap()">🗺 Navigate to Stop 1 in Amap (高德地图)</button>
+        <button class="map-action-btn secondary" onclick="openStopInAmap(0)">📍 Show Stop 1 on Amap</button>
+    </div>
+
+    <div id="map-stop-list" class="fade-in">
+        <div class="stop-list-title">🚏 Today's Stops in Order:</div>
+        <div id="map-stop-items"></div>
+    </div>
+    <p style="text-align:center; color:var(--color-text-light); margin-top:1.5rem; font-size:0.85rem;">
+        * The route line shows the flow of your day. For real-time navigation, tap <strong>Amap (高德地图)</strong> — it works well in China with live traffic and metro routes. Routes, prices, and opening hours can change, so always double-check before you go.
+    </p>
+</section>
+
+<!-- ===== FOOD GUIDE ===== -->
+<section class="section" id="food" style="background: linear-gradient(180deg, #fdf6ec, var(--color-bg));">
+    <div class="section-header fade-in">
+        <h2>🍜 Guangzhou Food Guide</h2>
+        <div class="divider"></div>
+        <p>Guangzhou is the <strong>culinary capital of China</strong>. Here are the must-try dishes during your visit.</p>
+        <div style="background: var(--color-accent-bg); border-radius: 12px; padding: 1.2rem 1.5rem; margin-top: 2rem; display:inline-block; text-align:left;">
+            <strong style="color: var(--color-accent);">💡 Budget Tip:</strong>
+            Eat at <strong>local canteens (食堂)</strong> for ¥15–25 per meal, or grab street snacks for ¥10–20.
+            Skip tourist restaurants — follow the locals to find the best AND cheapest food!
+        </div>
+    </div>
+
+    <div class="food-grid">
+        <div class="food-card fade-in">
+            <div class="food-emoji">🥟</div>
+            <div class="food-info">
+                <h3>Dim Sum</h3>
+                <div class="cn-name">早茶 · zǎo chá</div>
+                <p>The heart of Cantonese breakfast culture. Order from carts or menus at teahouses — har gow, siu mai, char siu bao, cheung fun, and more.</p>
+                <div class="must-try">🏆 Best at: Tao Tao Ju, Panxi, Dim Dim Sum</div>
+            </div>
+        </div>
+
+        <div class="food-card fade-in">
+            <div class="food-emoji">🍗</div>
+            <div class="food-info">
+                <h3>Roast Goose & BBQ Meats</h3>
+                <div class="cn-name">烧鹅 · shāo é</div>
+                <p>Cantonese roast meats are legendary. Crispy-skinned roast goose, char siu (BBQ pork), and roast duck — all carved to order over rice.</p>
+                <div class="must-try">🏆 Best at: Yat Lok, Lou Heung</div>
+            </div>
+        </div>
+
+        <div class="food-card fade-in">
+            <div class="food-emoji">🍲</div>
+            <div class="food-info">
+                <h3>Claypot Rice</h3>
+                <div class="cn-name">煲仔饭 · bāo zǎi fàn</div>
+                <p>Rice cooked in a clay pot with Chinese sausage, chicken, or minced pork. The crispy rice crust at the bottom is the best part!</p>
+                <div class="must-try">🏆 Best at: Jiaji Claypot Rice</div>
+            </div>
+        </div>
+
+        <div class="food-card fade-in">
+            <div class="food-emoji">🥣</div>
+            <div class="food-info">
+                <h3>Cantonese Soup</h3>
+                <div class="cn-name">老火汤 · lǎo huǒ tāng</div>
+                <p>Slow-cooked for hours with herbs, meat, and vegetables. Every restaurant has its daily soup — it's a Cantonese health ritual!</p>
+                <div class="must-try">🏆 Best at: Any local Cantonese restaurant</div>
+            </div>
+        </div>
+
+        <div class="food-card fade-in">
+            <div class="food-emoji">🍮</div>
+            <div class="food-info">
+                <h3>Double-Skin Milk Pudding</h3>
+                <div class="cn-name">双皮奶 · shuāng pí nǎi</div>
+                <p>A silky, warm or cold milk pudding with a delicate skin on top. Sweet, creamy, and absolutely addictive. A Foshan specialty!</p>
+                <div class="must-try">🏆 Best at: Renxin, Nanshun Shuangpi Nai</div>
+            </div>
+        </div>
+
+        <div class="food-card fade-in">
+            <div class="food-emoji">🐟</div>
+            <div class="food-info">
+                <h3>Steamed Fish</h3>
+                <div class="cn-name">清蒸鱼 · qīng zhēng yú</div>
+                <p>Fresh whole fish steamed with ginger, scallions, and soy sauce. Simple, pure, and the hallmark of Cantonese cooking philosophy.</p>
+                <div class="must-try">🏆 Best at: Any seafood restaurant in Liwan</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PRACTICAL TIPS ===== -->
+<section class="section" id="tips">
+    <div class="section-header fade-in">
+        <h2>📋 Practical Tips</h2>
+        <div class="divider"></div>
+        <p>Everything you need to know before arriving in Guangzhou.</p>
+    </div>
+
+    <div class="tips-grid">
+        <div class="tip-category fade-in">
+            <h3>💳 Money & Payment</h3>
+            <ul class="tip-list">
+                <li>China is almost entirely cashless — <strong>WeChat Pay</strong> and <strong>Alipay</strong> dominate</li>
+                <li>Foreign visitors can now link international credit cards to WeChat/Alipay</li>
+                <li>Keep some cash (¥200-500) for small vendors and emergencies</li>
+                <li>ATMs at airports and banks (ICBC, Bank of China) accept foreign cards</li>
+                <li>Exchange rates: ~¥7.2 = $1 USD (check before travel)</li>
+            </ul>
+        </div>
+
+        <div class="tip-category fade-in">
+            <h3>🚇 Transportation (Budget Mode)</h3>
+            <ul class="tip-list">
+                <li><strong>Metro only</strong> — clean, fast, and cheap (¥2-8 per ride). Avoid taxis/DiDi to save money!</li>
+                <li>Download <strong>Alipay</strong> for QR code metro entry (no physical card needed!)</li>
+                <li>Use <strong>Amap (高德地图)</strong> for best metro route planning</li>
+                <li>Airport Express to city center: ~30 min, ¥25 (cheapest option to airport)</li>
+                <li>Walk whenever possible — Guangzhou is very walkable, especially in old town areas!</li>
+            </ul>
+        </div>
+
+        <div class="tip-category fade-in">
+            <h3>📱 Apps to Download</h3>
+            <ul class="tip-list">
+                <li><strong>WeChat</strong> — messaging, payments, mini-programs (essential!)</li>
+                <li><strong>Alipay</strong> — payments, metro QR, food ordering</li>
+                <li><strong>DiDi</strong> — ride-hailing</li>
+                <li><strong>Trip.com</strong> — English booking for hotels & attractions</li>
+                <li><strong>Google Translate</strong> — camera translation for menus</li>
+                <li><strong>Amap (高德地图)</strong> — best navigation for China</li>
+            </ul>
+        </div>
+
+        <div class="tip-category fade-in">
+            <h3>🌡 November Weather</h3>
+            <ul class="tip-list">
+                <li><strong>Temperature:</strong> 18°C – 26°C (64°F – 79°F)</li>
+                <li><strong>Humidity:</strong> Moderate, much lower than summer</li>
+                <li><strong>Rain:</strong> Low chance — pack a light rain jacket just in case</li>
+                <li><strong>Clothing:</strong> Light layers — t-shirts, light jacket, comfortable walking shoes</li>
+                <li>November is one of the <strong>best months to visit!</strong></li>
+            </ul>
+        </div>
+
+        <div class="tip-category fade-in">
+            <h3>🏨 Where to Stay (Budget-Friendly)</h3>
+            <ul class="tip-list">
+                <li><strong>Beijing Road area:</strong> Central, walkable, tons of cheap eats nearby</li>
+                <li><strong>Liwan District:</strong> Traditional, authentic, most affordable hotels</li>
+                <li>Budget guesthouses & hostels: <strong>¥80–150/night</strong> (private room available!)</li>
+                <li>Book on <strong>Trip.com, Booking.com, or Hostelworld</strong> for deals</li>
+                <li>Tip: staying near a metro station saves transport costs too!</li>
+            </ul>
+        </div>
+
+        <div class="tip-category fade-in">
+            <h3>🛂 Visa & Entry</h3>
+            <ul class="tip-list">
+                <li>Many nationalities qualify for the <strong>144-hour visa-free transit</strong> policy</li>
+                <li>Check if your country qualifies (63 countries listed)</li>
+                <li>Transit must be to a third country (not round-trip to origin)</li>
+                <li>Passport must be valid for 6+ months</li>
+                <li>Consider the standard tourist visa (L visa) for 5+ day stays</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PACKING LIST ===== -->
+<section class="section" id="packing" style="background: linear-gradient(180deg, #f0f7fa, var(--color-bg));">
+    <div class="section-header fade-in">
+        <h2>🎒 Packing List</h2>
+        <div class="divider"></div>
+        <p>Click items to check them off! Tailored for Guangzhou in November.</p>
+    </div>
+
+    <div class="packing-grid">
+        <div class="packing-category fade-in">
+            <h3>👕 Clothing</h3>
+            <ul class="checklist">
+                <li>T-shirts / light tops (5-6)</li>
+                <li>Light jacket or cardigan</li>
+                <li>Long pants / jeans (2-3)</li>
+                <li>Comfortable walking shoes</li>
+                <li>Sandals / flip-flops</li>
+                <li>Light rain jacket</li>
+                <li>Sleepwear</li>
+                <li>Underwear & socks (5-6 sets)</li>
+            </ul>
+        </div>
+
+        <div class="packing-category fade-in">
+            <h3>📱 Tech & Gadgets</h3>
+            <ul class="checklist">
+                <li>Phone + charger</li>
+                <li>China power adapter (Type A/I)</li>
+                <li>Power bank (20,000mAh+)</li>
+                <li>Camera (optional)</li>
+                <li>Portable WiFi / eSIM card</li>
+                <li>Earbuds / headphones</li>
+            </ul>
+        </div>
+
+        <div class="packing-category fade-in">
+            <h3>📄 Documents</h3>
+            <ul class="checklist">
+                <li>Passport (valid 6+ months)</li>
+                <li>Visa / transit approval</li>
+                <li>Flight tickets (digital + print)</li>
+                <li>Hotel confirmation</li>
+                <li>Travel insurance docs</li>
+                <li>Emergency contact card</li>
+            </ul>
+        </div>
+
+        <div class="packing-category fade-in">
+            <h3>🧴 Essentials</h3>
+            <ul class="checklist">
+                <li>Sunscreen (SPF 50+)</li>
+                <li>Sunglasses</li>
+                <li>Personal medications</li>
+                <li>Hand sanitizer</li>
+                <li>Tissues / wet wipes</li>
+                <li>Reusable water bottle</li>
+                <li>Small daypack / crossbody bag</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ===== BUDGET ===== -->
+<section class="section" id="budget">
+    <div class="section-header fade-in">
+        <h2>💰 Budget Breakdown — ¥2,000</h2>
+        <div class="divider"></div>
+        <p>Smart budget plan for 5 days / 4 nights in Guangzhou (per person, excluding flights).</p>
+    </div>
+
+    <div style="overflow-x: auto;" class="fade-in">
+        <table class="budget-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Details</th>
+                    <th style="text-align:right">Est. Cost (¥)</th>
+                    <th style="text-align:right">Est. Cost ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🏨 Accommodation</td>
+                    <td>4 nights × ¥120 (budget guesthouse/hostel)</td>
+                    <td style="text-align:right">¥480</td>
+                    <td style="text-align:right">~$67</td>
+                </tr>
+                <tr>
+                    <td>🍜 Food & Drinks</td>
+                    <td>5 days × ¥100 (street food & local canteens)</td>
+                    <td style="text-align:right">¥500</td>
+                    <td style="text-align:right">~$69</td>
+                </tr>
+                <tr>
+                    <td>🚇 Transportation</td>
+                    <td>Metro only (no taxis)</td>
+                    <td style="text-align:right">¥120</td>
+                    <td style="text-align:right">~$17</td>
+                </tr>
+                <tr>
+                    <td>🎟 Attractions</td>
+                    <td>Many free! Canton Tower ¥150, Cruise ¥80, others free</td>
+                    <td style="text-align:right">¥300</td>
+                    <td style="text-align:right">~$42</td>
+                </tr>
+                <tr>
+                    <td>📱 SIM / WiFi</td>
+                    <td>Prepaid data SIM (5 days unlimited)</td>
+                    <td style="text-align:right">¥60</td>
+                    <td style="text-align:right">~$8</td>
+                </tr>
+                <tr>
+                    <td>🛍 Shopping & Souvenirs</td>
+                    <td>Small gifts, snacks, tea samples</td>
+                    <td style="text-align:right">¥200</td>
+                    <td style="text-align:right">~$28</td>
+                </tr>
+                <tr>
+                    <td>🔄 Buffer / Extras</td>
+                    <td>Unexpected costs, extra snacks, desserts</td>
+                    <td style="text-align:right">¥340</td>
+                    <td style="text-align:right">~$47</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2"><strong>TOTAL (per person)</strong></td>
+                    <td style="text-align:right"><strong>¥2,000</strong></td>
+                    <td style="text-align:right"><strong>~$278</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p style="text-align:center; color:var(--color-text-light); margin-top:1.5rem; font-size:0.85rem;">
+        * Does not include flights. Budget-friendly tips: eat at local canteens (食堂), use metro only, visit free attractions.
+        Many of Guangzhou's best experiences — parks, temples, street walks, and river views — are completely free!
+        Exchange rate used: ¥7.2 = $1 USD.
+    </p>
+</section>
+
+<!-- ===== PHRASE BOOK ===== -->
+<section class="section" id="phrases" style="background: linear-gradient(180deg, #fdf6ec, var(--color-bg));">
+    <div class="section-header fade-in">
+        <h2>🗣 Essential Phrases</h2>
+        <div class="divider"></div>
+        <p>A few Mandarin & Cantonese phrases to make your trip smoother.</p>
+    </div>
+
+    <div class="phrase-grid fade-in">
+        <div class="phrase-card">
+            <div class="phrase-en">Hello</div>
+            <div class="phrase-cn">你好</div>
+            <div class="phrase-pinyin">Nǐ hǎo</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">Thank you</div>
+            <div class="phrase-cn">谢谢</div>
+            <div class="phrase-pinyin">Xiè xiè</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">How much?</div>
+            <div class="phrase-cn">多少钱？</div>
+            <div class="phrase-pinyin">Duō shao qián?</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">Where is...?</div>
+            <div class="phrase-cn">在哪里？</div>
+            <div class="phrase-pinyin">Zài nǎ lǐ?</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">I want this one</div>
+            <div class="phrase-cn">我要这个</div>
+            <div class="phrase-pinyin">Wǒ yào zhè ge</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">Delicious!</div>
+            <div class="phrase-cn">好吃！</div>
+            <div class="phrase-pinyin">Hǎo chī!</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">Excuse me / Sorry</div>
+            <div class="phrase-cn">不好意思</div>
+            <div class="phrase-pinyin">Bù hǎo yì si</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">No spicy, please</div>
+            <div class="phrase-cn">不要辣</div>
+            <div class="phrase-pinyin">Bù yào là</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">Water, please</div>
+            <div class="phrase-cn">请给我水</div>
+            <div class="phrase-pinyin">Qǐng gěi wǒ shuǐ</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">The bill, please</div>
+            <div class="phrase-cn">买单</div>
+            <div class="phrase-pinyin">Mǎi dān</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">Metro station?</div>
+            <div class="phrase-cn">地铁站在哪？</div>
+            <div class="phrase-pinyin">Dì tiě zhàn zài nǎ?</div>
+        </div>
+        <div class="phrase-card">
+            <div class="phrase-en">Beautiful!</div>
+            <div class="phrase-cn">好漂亮！</div>
+            <div class="phrase-pinyin">Hǎo piào liang!</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <h2>Have an Amazing Trip! 🌟</h2>
+    <p>Guangzhou will steal your heart with its food, culture, and warmth. Safe travels and happy eating!</p>
+    <div class="cn-text">广州欢迎你 · 广州欢迎您</div>
+    <p style="margin-top:2rem; font-size:0.8rem; opacity:0.5;">Made with ❤ for your Guangzhou adventure · November 2026</p>
+</footer>
+
+<!-- ===== LEAFLET MAP LIBRARY ===== -->
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function updateNav() {
+        let current = '';
+        sections.forEach(section => {
+            const top = section.offsetTop - 100;
+            if (window.scrollY >= top) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', updateNav, { passive: true });
+
+    // Packing checklist toggle
+    document.querySelectorAll('.checklist li').forEach(item => {
+        item.addEventListener('click', () => {
+            item.classList.toggle('checked');
+        });
+    });
+// Packing checklist toggle
+    document.querySelectorAll('.checklist li').forEach(item => {
+        item.addEventListener('click', () => {
+            item.classList.toggle('checked');
+        });
+    });
+
+    // ===== ROUTE MAPS =====
+    const ROUTES = {
+        '1': {
+            title: 'Day 1 · Arrival & Old Guangzhou',
+            color: '#c0392b',
+            points: [
+                { name: 'Guangzhou Baiyun Airport', detail: 'Arrive at CAN, take Metro Line 3 to city center', lat: 23.3924, lng: 113.2988 },
+                { name: 'Tao Tao Ju Teahouse (陶陶居)', detail: 'Legendary dim sum since 1880', lat: 23.1235, lng: 113.2415 },
+                { name: 'Chen Clan Ancestral Hall (陈家祠)', detail: 'Lingnan architecture masterpiece | ¥10', lat: 23.1280, lng: 113.2475 },
+                { name: 'Beijing Road Pedestrian Street (北京路)', detail: '2,000 year-old shopping street', lat: 23.1220, lng: 113.2675 },
+                { name: 'Shangxiajiu Pedestrian Street (上下九)', detail: 'Neon-lit snack street, Qilou buildings', lat: 23.1165, lng: 113.2445 }
+            ]
+        },
+        '2': {
+            title: 'Day 2 · Yuexiu, CBD & Skyline',
+            color: '#e67e22',
+            points: [
+                { name: 'Yuexiu Park & Five Rams (越秀公园)', detail: 'City symbol & Zhenhai Tower | Free', lat: 23.1467, lng: 113.2585 },
+                { name: 'Sun Yat-sen Memorial Hall (中山纪念堂)', detail: 'Octagonal landmark hall | ¥10', lat: 23.1362, lng: 113.2580 },
+                { name: 'Wonton Noodle Lunch', detail: 'Classic Cantonese 云吞面 stop', lat: 23.1330, lng: 113.2560 },
+                { name: 'Zhujiang New Town (珠江新城)', detail: 'Modern CBD, Opera House & Museum', lat: 23.1195, lng: 113.3230 },
+                { name: 'Canton Tower (广州塔)', detail: '488m observation deck | ¥150 or free ground views', lat: 23.1064, lng: 113.3245 }
+            ]
+        },
+        '3': {
+            title: 'Day 3 · Shamian Island & River Cruise',
+            color: '#27ae60',
+            points: [
+                { name: 'Shamian Island (沙面岛)', detail: 'Colonial-era walking island | Free', lat: 23.1080, lng: 113.2385 },
+                { name: 'Liwan Lake Park (荔湾湖公园)', detail: 'Serene gardens & Cantonese opera', lat: 23.1240, lng: 113.2325 },
+                { name: 'Xiguan Old Town (西关)', detail: 'Traditional tiled houses & folk art', lat: 23.1200, lng: 113.2350 },
+                { name: 'Tianzi Wharf (天字码头)', detail: 'Pearl River Night Cruise departure', lat: 23.1195, lng: 113.2750 }
+            ]
+        },
+        '4a': {
+            title: 'Day 4 · Foshan Martial Arts Trip',
+            color: '#2980b9',
+            points: [
+                { name: 'Foshan Ancestral Temple (祖庙)', detail: 'Cantonese & martial arts heritage | ¥25', lat: 23.0300, lng: 113.1150 },
+                { name: 'Ip Man Museum', detail: 'Wing Chun grandmaster legacy', lat: 23.0240, lng: 113.1110 },
+                { name: 'Donghua Ancient Town (东华里)', detail: 'Lingnan architecture & culture', lat: 23.0210, lng: 113.1100 },
+                { name: 'Zhujiang Beer Street (琶醍)', detail: 'Riverside dinner & craft beer', lat: 23.0950, lng: 113.3490 }
+            ]
+        },
+        '4b': {
+            title: 'Day 4 · Baiyun Mountain Hiking',
+            color: '#2980b9',
+            points: [
+                { name: 'Baiyun Mountain South Gate (白云山)', detail: 'City panoramic views | ¥5 + cable car ¥25', lat: 23.1750, lng: 113.2940 },
+                { name: 'Mingchun Garden (明珠楼)', detail: 'Scenic lakeside garden in the park', lat: 23.1940, lng: 113.2850 },
+                { name: 'Star Lake', detail: 'Tranquil lake viewpoint', lat: 23.1800, lng: 113.2880 },
+                { name: 'Tianhe City Mall (天河城)', detail: 'Shopping & dinner stop', lat: 23.1325, lng: 113.3185 },
+                { name: 'Zhujiang Beer Street (琶醍)', detail: 'Riverside dinner & craft beer', lat: 23.0950, lng: 113.3490 }
+            ]
+        },
+        '5': {
+            title: 'Day 5 · Temples, Souvenirs & Departure',
+            color: '#8e44ad',
+            points: [
+                { name: 'Six Banyan Trees Temple (六榕寺)', detail: '1,500-year-old pagoda temple | Free', lat: 23.1315, lng: 113.2585 },
+                { name: 'Jianshe Liu Ma Lu (建设六马路)', detail: 'Cafe street for morning tea', lat: 23.1310, lng: 113.2790 },
+                { name: 'Liwan Plaza / Market', detail: 'Souvenir & snack shopping', lat: 23.1210, lng: 113.2380 },
+                { name: 'Final Cantonese Lunch', detail: 'Roast goose or claypot rice', lat: 23.1150, lng: 113.2440 },
+                { name: 'Guangzhou Baiyun Airport', detail: 'Metro Line 3 or Airport Express', lat: 23.3924, lng: 113.2988 }
+            ]
+        }
+    };
+
+    let routeMap = null;
+    let routeLayers = [];
+    let currentRouteKey = '1';
+
+    function initRouteMap() {
+        if (!window.L) {
+            document.getElementById('route-map').innerHTML =
+                '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--color-text-light);text-align:center;padding:2rem;">' +
+                '⚠ 地图需要网络连接 / Interactive map needs an internet connection.<br>Use the <strong>Amap (高德地图)</strong> buttons below instead!' +
+                '</div>';
+            return;
+        }
+        routeMap = L.map('route-map', { scrollWheelZoom: false }).setView([23.13, 113.28], 12);
+        // Amap (高德地图) tiles — loads reliably in mainland China
+        L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}', {
+            maxZoom: 19,
+            subdomains: ['1', '2', '3', '4'],
+            attribution: '&copy; <a href="https://www.amap.com">高德地图</a>'
+        }).addTo(routeMap);
+        drawRoute('1');
+    }
+
+    function makeNumberedIcon(number, color) {
+        return L.divIcon({
+            className: '',
+            html: `<div class="numbered-marker" style="background:${color};"><span>${number}</span></div>`,
+            iconSize: [26, 26],
+            iconAnchor: [13, 26],
+            popupAnchor: [0, -26]
+        });
+    }
+
+    function drawRoute(key) {
+        const route = ROUTES[key];
+        if (!route) return;
+
+        // Clear previous layers
+        routeLayers.forEach(layer => routeMap.removeLayer(layer));
+        routeLayers = [];
+
+        // Update legend
+        document.getElementById('map-legend-title').textContent = route.title;
+        document.getElementById('map-legend-count').textContent = route.points.length + ' stops';
+
+        // Update stop list
+        const stopListEl = document.getElementById('map-stop-items');
+        stopListEl.innerHTML = '';
+        route.points.forEach((point, i) => {
+            const row = document.createElement('div');
+            row.className = 'stop-row';
+            row.innerHTML = `<span class="stop-num" style="background:${route.color};">${i + 1}</span>
+                <span><strong>${point.name}</strong> — ${point.detail}
+                <a href="https://uri.amap.com/search?keyword=${encodeURIComponent(point.name)}&callnative=1" target="_blank" rel="noopener" style="margin-left:0.5rem;font-size:0.8rem;color:var(--color-accent);white-space:nowrap;" title="Open in Amap">📍 高德</a>
+                </span>`;
+            stopListEl.appendChild(row);
+        });
+
+        // Add route polyline
+        const latlngs = route.points.map(p => [p.lat, p.lng]);
+        const polyline = L.polyline(latlngs, {
+            color: route.color,
+            weight: 4,
+            opacity: 0.7,
+            dashArray: '8 8'
+        }).addTo(routeMap);
+        routeLayers.push(polyline);
+
+        // Add numbered markers
+        route.points.forEach((point, i) => {
+            const marker = L.marker([point.lat, point.lng], {
+                icon: makeNumberedIcon(i + 1, route.color),
+                title: point.name
+            }).addTo(routeMap);
+            marker.bindPopup(`<strong>${i + 1}. ${point.name}</strong><br>${point.detail}`);
+            routeLayers.push(marker);
+        });
+
+        // Fit bounds with padding
+        const bounds = L.latLngBounds(latlngs);
+        routeMap.fitBounds(bounds, { padding: [50, 50] });
+    }
+
+    // Day tab switching
+    document.querySelectorAll('.map-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.map-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentRouteKey = tab.getAttribute('data-day');
+            // Update the stop list & legend even if the map can't render
+            const route = ROUTES[currentRouteKey];
+            if (!route) return;
+            document.getElementById('map-legend-title').textContent = route.title;
+            document.getElementById('map-legend-count').textContent = route.points.length + ' stops';
+            const stopListEl = document.getElementById('map-stop-items');
+            stopListEl.innerHTML = '';
+            route.points.forEach((point, i) => {
+                const row = document.createElement('div');
+                row.className = 'stop-row';
+                row.innerHTML = `<span class="stop-num" style="background:${route.color};">${i + 1}</span><span><strong>${point.name}</strong> — ${point.detail}</span>`;
+                stopListEl.appendChild(row);
+            });
+            if (routeMap) {
+                drawRoute(currentRouteKey);
+                setTimeout(() => routeMap.invalidateSize(), 250);
+            }
+        });
+    });
+
+    // Open Amap navigation to stop 1 (transit mode — metro-first in China)
+    function openRouteInAmap() {
+        const route = ROUTES[currentRouteKey];
+        if (!route) return;
+        const p = route.points[0];
+        // Amap URI: to=lng,lat,name ; mode=1 (公交/transit) ; coordinate=wgs84 converts our coords
+        const url = `https://uri.amap.com/navigation?to=${p.lng.toFixed(6)},${p.lat.toFixed(6)},${encodeURIComponent(p.name)}&mode=1&coordinate=wgs84&callnative=1`;
+        window.open(url, '_blank');
+    }
+
+    // Open a specific stop in Amap search (keyword search is most reliable)
+    function openStopInAmap(index) {
+        const route = ROUTES[currentRouteKey];
+        if (!route) return;
+        const p = route.points[index] || route.points[0];
+        const url = `https://uri.amap.com/search?keyword=${encodeURIComponent(p.name)}&callnative=1`;
+        window.open(url, '_blank');
+    }
+
+    // Initialize map once DOM is ready
+    if (window.L) {
+        initRouteMap();
+    } else {
+        window.addEventListener('load', initRouteMap);
+    }
+
+    // Re-fit map when the maps section scrolls into view (fixes tile sizing)
+    const mapsSection = document.getElementById('maps');
+    if (mapsSection && 'IntersectionObserver' in window) {
+        const mapObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && routeMap) {
+                    routeMap.invalidateSize();
+                }
+            });
+        });
+        mapObserver.observe(mapsSection);
+    }
+</script>
+
+</body>
+</html>
